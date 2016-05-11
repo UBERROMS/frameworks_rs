@@ -78,12 +78,13 @@ typedef uint32_t uint;
 typedef uint64_t ulong;
 #endif
 
+// Add NOLINT to suppress wrong warnings from clang-tidy.
 #ifndef __LP64__
 #define OPAQUETYPE(t) \
-    typedef struct { const int* const p; } __attribute__((packed, aligned(4))) t;
+    typedef struct { const int* const p; } __attribute__((packed, aligned(4))) t; /*NOLINT*/
 #else
 #define OPAQUETYPE(t) \
-    typedef struct { const void* p; const void* r; const void* v1; const void* v2; } t;
+    typedef struct { const void* p; const void* r; const void* v1; const void* v2; } t; /*NOLINT*/
 #endif
 
 OPAQUETYPE(rs_element)
@@ -419,14 +420,15 @@ android::renderscript::rs_allocation rsCreateAllocation(
 //////////////////////////////////////////////////////////////////////////////
 // Object routines
 //////////////////////////////////////////////////////////////////////////////
+// Add NOLINT to suppress wrong warnings from clang-tidy.
 #define IS_CLEAR_SET_OBJ(t) \
     bool rsIsObject(t src) { \
         return src.p != nullptr; \
     } \
-    void __attribute__((overloadable)) rsClearObject(t *dst) { \
+    void __attribute__((overloadable)) rsClearObject(t *dst) { /*NOLINT*/ \
         rsrClearObject(reinterpret_cast<rs_object_base *>(dst)); \
     } \
-    void __attribute__((overloadable)) rsSetObject(t *dst, t src) { \
+    void __attribute__((overloadable)) rsSetObject(t *dst, t src) { /*NOLINT*/ \
         Context *rsc = RsdCpuReference::getTlsContext(); \
         rsrSetObject(rsc, reinterpret_cast<rs_object_base *>(dst), (ObjectBase*)src.p); \
     }
@@ -523,6 +525,7 @@ const void *rsGetElementAt(::rs_allocation a, uint32_t x) {
     return rsGetElementAt(a, x, 0, 0);
 }
 
+// Add NOLINT to suppress wrong warnings from clang-tidy.
 #define ELEMENT_AT(T, DT, VS) \
     void rsSetElementAt_##T(::rs_allocation a, const T *val, uint32_t x, uint32_t y, uint32_t z) { \
         void *r = ElementAt((Allocation *)a.p, DT, VS, x, y, z); \
@@ -535,15 +538,15 @@ const void *rsGetElementAt(::rs_allocation a, uint32_t x) {
     void rsSetElementAt_##T(::rs_allocation a, const T *val, uint32_t x) { \
         rsSetElementAt_##T(a, val, x, 0, 0); \
     } \
-    void rsGetElementAt_##T(::rs_allocation a, T *val, uint32_t x, uint32_t y, uint32_t z) { \
+    void rsGetElementAt_##T(::rs_allocation a, T *val, uint32_t x, uint32_t y, uint32_t z) { /*NOLINT*/ \
         void *r = ElementAt((Allocation *)a.p, DT, VS, x, y, z); \
         if (r != nullptr) *val = ((T *)r)[0]; \
         else ALOGE("Error from %s", __PRETTY_FUNCTION__); \
     } \
-    void rsGetElementAt_##T(::rs_allocation a, T *val, uint32_t x, uint32_t y) { \
+    void rsGetElementAt_##T(::rs_allocation a, T *val, uint32_t x, uint32_t y) { /*NOLINT*/ \
         rsGetElementAt_##T(a, val, x, y, 0); \
     } \
-    void rsGetElementAt_##T(::rs_allocation a, T *val, uint32_t x) { \
+    void rsGetElementAt_##T(::rs_allocation a, T *val, uint32_t x) { /*NOLINT*/ \
         rsGetElementAt_##T(a, val, x, 0, 0); \
     }
 
@@ -611,6 +614,7 @@ typedef unsigned long native_ulong2 __attribute__((ext_vector_type(2)));
 typedef unsigned long native_ulong3 __attribute__((ext_vector_type(3)));
 typedef unsigned long native_ulong4 __attribute__((ext_vector_type(4)));
 
+// Add NOLINT to suppress wrong warnings from clang-tidy.
 #define ELEMENT_AT_OVERLOADS(T, U) \
     void rsSetElementAt_##T(::rs_allocation a, const U *val, uint32_t x, uint32_t y, uint32_t z) { \
         rsSetElementAt_##T(a, (T *) val, x, y, z); \
@@ -621,13 +625,13 @@ typedef unsigned long native_ulong4 __attribute__((ext_vector_type(4)));
     void rsSetElementAt_##T(::rs_allocation a, const U *val, uint32_t x) { \
         rsSetElementAt_##T(a, (T *) val, x, 0, 0); \
     } \
-    void rsGetElementAt_##T(::rs_allocation a, U *val, uint32_t x, uint32_t y, uint32_t z) { \
+    void rsGetElementAt_##T(::rs_allocation a, U *val, uint32_t x, uint32_t y, uint32_t z) { /*NOLINT*/ \
         rsGetElementAt_##T(a, (T *) val, x, y, z); \
     } \
-    void rsGetElementAt_##T(::rs_allocation a, U *val, uint32_t x, uint32_t y) { \
+    void rsGetElementAt_##T(::rs_allocation a, U *val, uint32_t x, uint32_t y) { /*NOLINT*/ \
         rsGetElementAt_##T(a, (T *) val, x, y, 0); \
     } \
-    void rsGetElementAt_##T(::rs_allocation a, U *val, uint32_t x) { \
+    void rsGetElementAt_##T(::rs_allocation a, U *val, uint32_t x) { /*NOLINT*/ \
         rsGetElementAt_##T(a, (T *) val, x, 0, 0); \
     } \
 
