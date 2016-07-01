@@ -74,7 +74,7 @@ protected:
     virtual ~Sampler();
 
 private:
-    Sampler(Context *);
+    explicit Sampler(Context *);
     Sampler(Context *,
             RsSamplerValue magFilter,
             RsSamplerValue minFilter,

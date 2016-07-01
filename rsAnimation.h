@@ -41,7 +41,7 @@ public:
     static Animation *createFromStream(Context *rsc, IStream *stream);
 
 protected:
-    Animation(Context *rsc);
+    explicit Animation(Context *rsc);
 
 
 

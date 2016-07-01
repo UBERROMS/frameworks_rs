@@ -1412,7 +1412,7 @@ public:
         bool mSkipPadding;
 
     public:
-        Builder(sp<RS> rs);
+        explicit Builder(sp<RS> rs);
         ~Builder();
         void add(const sp<const Element>& e, const char * name, uint32_t arraySize = 1);
         sp<const Element> create();
@@ -1428,7 +1428,7 @@ protected:
             uint32_t * arraySizes);
     Element(void *id, sp<RS> rs, RsDataType dt, RsDataKind dk, bool norm, uint32_t size);
     Element(void *id, sp<RS> rs);
-    Element(sp<RS> rs);
+    explicit Element(sp<RS> rs);
     virtual ~Element();
 
 private:
@@ -1458,7 +1458,7 @@ protected:
     size_t mLen;
 
 public:
-    FieldPacker(size_t len)
+    explicit FieldPacker(size_t len)
         : mPos(0), mLen(len) {
             mData = new unsigned char[len];
         }

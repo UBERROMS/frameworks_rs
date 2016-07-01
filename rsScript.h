@@ -98,7 +98,7 @@ public:
     };
     Hal mHal;
 
-    Script(Context *);
+    explicit Script(Context *);
     virtual ~Script();
 
     struct Enviroment_t {

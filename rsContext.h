@@ -102,7 +102,7 @@ public:
 
     class PushState {
     public:
-        PushState(Context *);
+        explicit PushState(Context *);
         ~PushState();
 
     private:

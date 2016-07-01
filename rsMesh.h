@@ -55,7 +55,7 @@ public:
     };
     Hal mHal;
 
-    Mesh(Context *);
+    explicit Mesh(Context *);
     Mesh(Context *, uint32_t vertexBuffersCount, uint32_t primitivesCount);
     ~Mesh();
 

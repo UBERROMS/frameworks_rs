@@ -26,7 +26,7 @@ namespace renderscript {
 
 class ProgramBase : public ObjectBase {
 public:
-    ProgramBase(Context *rsc) : ObjectBase(rsc) {
+    explicit ProgramBase(Context *rsc) : ObjectBase(rsc) {
         mDirty = true;
     }
 

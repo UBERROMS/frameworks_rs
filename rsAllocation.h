@@ -223,7 +223,7 @@ protected:
 #if !defined(RS_SERVER) && !defined(RS_COMPATIBILITY_LIB)
     class NewBufferListener : public android::ConsumerBase::FrameAvailableListener {
     public:
-        NewBufferListener(uint32_t numAlloc);
+        explicit NewBufferListener(uint32_t numAlloc);
         virtual ~NewBufferListener();
         const android::renderscript::Context *rsc;
         const android::renderscript::Allocation **alloc;

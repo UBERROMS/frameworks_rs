@@ -116,7 +116,7 @@ protected:
     float mFontSize;
     uint32_t mDpi;
 
-    Font(Context *rsc);
+    explicit Font(Context *rsc);
     bool init(const char *name, float fontSize, uint32_t dpi, const void *data = nullptr, uint32_t dataLen = 0);
 
     virtual void preDestroy() const;

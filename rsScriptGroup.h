@@ -56,7 +56,7 @@ public:
 
     class Node {
     public:
-        Node(Script *);
+        explicit Node(Script *);
 
         Vector<const ScriptKernelID *> mKernels;
         Vector<Link *> mOutputs;
@@ -68,7 +68,7 @@ public:
 
     class IO {
     public:
-        IO(const ScriptKernelID *);
+        explicit IO(const ScriptKernelID *);
 
         const ScriptKernelID *mKernel;
         ObjectBaseRef<Allocation> mAlloc;
@@ -103,7 +103,7 @@ private:
     // executes. Skips the exeuction if validation fails.
     bool validateInputAndOutput(Context *);
 
-    ScriptGroup(Context *);
+    explicit ScriptGroup(Context *);
 };
 
 

@@ -150,7 +150,7 @@ protected:
     virtual ~Type();
 
 private:
-    Type(Context *);
+    explicit Type(Context *);
     Type(const Type &);
 };
 

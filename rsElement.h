@@ -152,7 +152,7 @@ protected:
 
 
     virtual ~Element();
-    Element(Context *);
+    explicit Element(Context *);
 
     Component mComponent;
     uint32_t mBitsUnpadded;

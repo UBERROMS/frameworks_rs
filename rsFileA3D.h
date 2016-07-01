@@ -32,7 +32,7 @@ namespace renderscript {
 
 class FileA3D : public ObjectBase {
 public:
-    FileA3D(Context *rsc);
+    explicit FileA3D(Context *rsc);
     ~FileA3D();
 
     uint32_t mMajorVersion;

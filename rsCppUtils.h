@@ -65,7 +65,7 @@ namespace android {
     // server has no Vector or String8 classes; implement on top of STL
     class String8: public std::string {
     public:
-    String8(const char *ptr) : std::string(ptr) {
+    explicit String8(const char *ptr) : std::string(ptr) {
 
         }
     String8(const char *ptr, size_t len) : std::string(ptr, len) {
