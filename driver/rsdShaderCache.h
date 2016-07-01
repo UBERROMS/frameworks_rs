@@ -78,7 +78,7 @@ protected:
         int32_t writtenLength;
         int32_t arraySize;
         uint32_t type;
-        UniformQueryData(uint32_t maxName) {
+        explicit UniformQueryData(uint32_t maxName) {
             name = nullptr;
             nameLength = maxName;
             if (nameLength > 0 ) {

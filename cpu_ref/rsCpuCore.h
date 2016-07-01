@@ -145,7 +145,7 @@ struct MTLaunchStructReduce : public MTLaunchStructCommon {
 class RsdCpuReferenceImpl : public RsdCpuReference {
 public:
     ~RsdCpuReferenceImpl() override;
-    RsdCpuReferenceImpl(Context *);
+    explicit RsdCpuReferenceImpl(Context *);
 
     void lockMutex();
     void unlockMutex();

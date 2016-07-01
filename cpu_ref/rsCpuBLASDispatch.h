@@ -462,7 +462,7 @@ bool loadBLASLib() {
 // Macros to help load the function pointers.
 #define RS_APPLY_MACRO_TO(x) \
     x = (FnPtr_##x)dlsym(handle, #x); \
-    if (x == nullptr) { \
+    if ((x) == nullptr) { \
         ALOGE("Failed to load " #x " for RS BLAS implementation."); \
         return false; \
     }

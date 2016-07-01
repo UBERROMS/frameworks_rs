@@ -70,7 +70,7 @@ protected:
 
     class StateBasedKey {
     public:
-        StateBasedKey(uint32_t texCount) : mShaderID(0) {
+        explicit StateBasedKey(uint32_t texCount) : mShaderID(0) {
             mTextureTargets = new uint32_t[texCount];
         }
         ~StateBasedKey() {
