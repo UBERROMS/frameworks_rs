@@ -49,7 +49,7 @@ LOCAL_SHARED_LIBRARIES += libRS_internal libRSCpuRef
 LOCAL_SHARED_LIBRARIES += liblog libcutils libutils libEGL libGLESv1_CM libGLESv2
 LOCAL_SHARED_LIBRARIES += libui libgui libsync
 
-LOCAL_SHARED_LIBRARIES += libbcinfo libLLVM
+LOCAL_SHARED_LIBRARIES += libbcinfo
 
 LOCAL_C_INCLUDES += frameworks/compile/libbcc/include
 
@@ -171,7 +171,7 @@ LOCAL_SHARED_LIBRARIES += liblog libcutils libutils libEGL libGLESv1_CM libGLESv
 LOCAL_SHARED_LIBRARIES += libgui libsync libdl libui
 LOCAL_SHARED_LIBRARIES += libft2 libpng libz
 
-LOCAL_SHARED_LIBRARIES += libbcinfo libLLVM
+LOCAL_SHARED_LIBRARIES += libbcinfo
 
 LOCAL_C_INCLUDES += external/freetype/include
 LOCAL_C_INCLUDES += frameworks/compile/libbcc/include
