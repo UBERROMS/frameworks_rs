@@ -27,7 +27,7 @@ void * BaseObj::getID() const {
     return mID;
 }
 
-void * BaseObj::getObjID(sp<const BaseObj> o) {
+void * BaseObj::getObjID(const sp<const BaseObj>& o) {
     return o == nullptr ? nullptr : o->getID();
 }
 
@@ -57,7 +57,7 @@ void BaseObj::updateFromNative() {
     mName = name;
 }
 
-bool BaseObj::equals(sp<const BaseObj> obj) {
+bool BaseObj::equals(const sp<const BaseObj>& obj) {
     // Early-out check to see if both BaseObjs are actually the same.
     if (this == obj.get())
         return true;

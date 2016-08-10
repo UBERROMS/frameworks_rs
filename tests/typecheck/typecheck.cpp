@@ -22,7 +22,7 @@ using namespace RSC;
 
 const static uint32_t x = 7;
 
-sp<Allocation> createAlloc(sp<RS> rs, sp<const Element> e) {
+sp<Allocation> createAlloc(const sp<RS>& rs, const sp<const Element>& e) {
     Type::Builder tb(rs, e);
     tb.setX(x);
     sp<const Type> t = tb.create();

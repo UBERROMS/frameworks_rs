@@ -25,7 +25,7 @@ void * Allocation::getIDSafe() const {
     return getID();
 }
 
-void Allocation::updateCacheInfo(sp<const Type> t) {
+void Allocation::updateCacheInfo(const sp<const Type>& t) {
     mCurrentDimX = t->getX();
     mCurrentDimY = t->getY();
     mCurrentDimZ = t->getZ();
@@ -261,7 +261,7 @@ void Allocation::copy1DRangeTo(uint32_t off, size_t count, void *data) {
     }
 }
 
-void Allocation::copy1DRangeFrom(uint32_t off, size_t count, sp<const Allocation> data,
+void Allocation::copy1DRangeFrom(uint32_t off, size_t count, const sp<const Allocation>& data,
                                  uint32_t dataOff) {
 
     tryDispatch(mRS, RS::dispatch->AllocationCopy2DRange(mRS->getContext(), getIDSafe(), off, 0,
@@ -310,7 +310,7 @@ void Allocation::copy2DRangeFrom(uint32_t xoff, uint32_t yoff, uint32_t w, uint3
 }
 
 void Allocation::copy2DRangeFrom(uint32_t xoff, uint32_t yoff, uint32_t w, uint32_t h,
-                                 sp<const Allocation> data, uint32_t dataXoff, uint32_t dataYoff) {
+                                 const sp<const Allocation>& data, uint32_t dataXoff, uint32_t dataYoff) {
     validate2DRange(xoff, yoff, w, h);
     tryDispatch(mRS, RS::dispatch->AllocationCopy2DRange(mRS->getContext(), getIDSafe(), xoff, yoff,
                                                          mSelectedLOD, mSelectedFace,
@@ -394,7 +394,7 @@ void Allocation::copy3DRangeFrom(uint32_t xoff, uint32_t yoff, uint32_t zoff, ui
 }
 
 void Allocation::copy3DRangeFrom(uint32_t xoff, uint32_t yoff, uint32_t zoff, uint32_t w, uint32_t h, uint32_t d,
-                                 sp<const Allocation> data, uint32_t dataXoff, uint32_t dataYoff, uint32_t dataZoff) {
+                                 const sp<const Allocation>& data, uint32_t dataXoff, uint32_t dataYoff, uint32_t dataZoff) {
     validate3DRange(xoff, yoff, zoff, w, h, d);
     tryDispatch(mRS, RS::dispatch->AllocationCopy3DRange(mRS->getContext(), getIDSafe(), xoff, yoff, zoff,
                                                          mSelectedLOD, w, h, d, data->getIDSafe(),
@@ -421,7 +421,7 @@ void Allocation::copy3DRangeTo(uint32_t xoff, uint32_t yoff, uint32_t zoff, uint
     }
 }
 
-sp<Allocation> Allocation::createTyped(sp<RS> rs, sp<const Type> type,
+sp<Allocation> Allocation::createTyped(const sp<RS>& rs, const sp<const Type>& type,
                                     RsAllocationMipmapControl mipmaps, uint32_t usage) {
     void *id = 0;
     if (rs->getError() == RS_SUCCESS) {
@@ -434,7 +434,7 @@ sp<Allocation> Allocation::createTyped(sp<RS> rs, sp<const Type> type,
     return new Allocation(id, rs, type, usage);
 }
 
-sp<Allocation> Allocation::createTyped(sp<RS> rs, sp<const Type> type,
+sp<Allocation> Allocation::createTyped(const sp<RS>& rs, const sp<const Type>& type,
                                     RsAllocationMipmapControl mipmaps, uint32_t usage,
                                     void *pointer) {
     void *id = 0;
@@ -449,12 +449,12 @@ sp<Allocation> Allocation::createTyped(sp<RS> rs, sp<const Type> type,
     return new Allocation(id, rs, type, usage);
 }
 
-sp<Allocation> Allocation::createTyped(sp<RS> rs, sp<const Type> type,
+sp<Allocation> Allocation::createTyped(const sp<RS>& rs, const sp<const Type>& type,
                                     uint32_t usage) {
     return createTyped(rs, type, RS_ALLOCATION_MIPMAP_NONE, usage);
 }
 
-sp<Allocation> Allocation::createSized(sp<RS> rs, sp<const Element> e,
+sp<Allocation> Allocation::createSized(const sp<RS>& rs, const sp<const Element>& e,
                                     size_t count, uint32_t usage) {
     Type::Builder b(rs, e);
     b.setX(count);
@@ -463,7 +463,7 @@ sp<Allocation> Allocation::createSized(sp<RS> rs, sp<const Element> e,
     return createTyped(rs, t, usage);
 }
 
-sp<Allocation> Allocation::createSized2D(sp<RS> rs, sp<const Element> e,
+sp<Allocation> Allocation::createSized2D(const sp<RS>& rs, const sp<const Element>& e,
                                       size_t x, size_t y, uint32_t usage) {
     Type::Builder b(rs, e);
     b.setX(x);
@@ -509,7 +509,7 @@ RSC::sp<Surface> Allocation::getSurface() {
     return new Surface(bp, true);;
 }
 
-void Allocation::setSurface(RSC::sp<Surface> s) {
+void Allocation::setSurface(const RSC::sp<Surface>& s) {
     if ((mUsage & RS_ALLOCATION_USAGE_IO_OUTPUT) == 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "Can only set Surface if IO_OUTPUT usage specified.");
         return;
