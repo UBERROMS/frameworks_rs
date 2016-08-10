@@ -5,7 +5,7 @@ using namespace RSC;
 
 static const uint32_t dimX = 7, dimY = 5, dimZ = 3;
 
-void testAllocationCreation(sp<RS> rs, sp<const Element> e, uint32_t nDims) {
+void testAllocationCreation(const sp<RS>& rs, const sp<const Element>& e, uint32_t nDims) {
     Type::Builder tb(rs, e);
     tb.setX(dimX);
     if (nDims >= 2)

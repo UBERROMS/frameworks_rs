@@ -29,7 +29,7 @@ ScriptIntrinsicBLAS::ScriptIntrinsicBLAS(sp<RS> rs, sp<const Element> e)
 
 }
 
-sp<ScriptIntrinsicBLAS> ScriptIntrinsicBLAS::create(sp<RS> rs) {
+sp<ScriptIntrinsicBLAS> ScriptIntrinsicBLAS::create(const sp<RS>& rs) {
     return new ScriptIntrinsicBLAS(rs, Element::U32(rs));
 }
 
@@ -174,8 +174,8 @@ nScriptIntrinsicBLAS_BNNM(RS* mRS, RsContext con, RsScript id, int M, int N, int
 /**
  * Level 2 BLAS
  */
-static void validateGEMV(RS* mRS, sp<const Element> e, RsBlasTranspose TransA, sp<Allocation> A,
-                         sp<Allocation> X, int incX, sp<Allocation> Y, int incY) {
+static void validateGEMV(RS* mRS, const sp<const Element>& e, RsBlasTranspose TransA, const sp<Allocation>& A,
+                         const sp<Allocation>& X, int incX, const sp<Allocation>& Y, int incY) {
     int M = A->getType()->getY();
     int N = A->getType()->getX();
     if (!A->getType()->getElement()->isCompatible(e) ||
@@ -204,8 +204,8 @@ static void validateGEMV(RS* mRS, sp<const Element> e, RsBlasTranspose TransA, s
     }
 }
 
-void ScriptIntrinsicBLAS::SGEMV(RsBlasTranspose TransA, float alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, float beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::SGEMV(RsBlasTranspose TransA, float alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, float beta, const sp<Allocation>& Y, int incY) {
     validateGEMV(mRS, Element::F32(mRS), TransA, A, X, incX, Y, incY);
     int M = A->getType()->getY();
     int N = A->getType()->getX();
@@ -215,8 +215,8 @@ void ScriptIntrinsicBLAS::SGEMV(RsBlasTranspose TransA, float alpha, sp<Allocati
                                 beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DGEMV(RsBlasTranspose TransA, double alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, double beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::DGEMV(RsBlasTranspose TransA, double alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, double beta, const sp<Allocation>& Y, int incY) {
     validateGEMV(mRS, Element::F64(mRS), TransA, A, X, incX, Y, incY);
     int M = A->getType()->getY();
     int N = A->getType()->getX();
@@ -226,8 +226,8 @@ void ScriptIntrinsicBLAS::DGEMV(RsBlasTranspose TransA, double alpha, sp<Allocat
                                 beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CGEMV(RsBlasTranspose TransA, Float2 alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, Float2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::CGEMV(RsBlasTranspose TransA, Float2 alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, Float2 beta, const sp<Allocation>& Y, int incY) {
     validateGEMV(mRS, Element::F32_2(mRS), TransA, A, X, incX, Y, incY);
     int M = A->getType()->getY();
     int N = A->getType()->getX();
@@ -237,8 +237,8 @@ void ScriptIntrinsicBLAS::CGEMV(RsBlasTranspose TransA, Float2 alpha, sp<Allocat
                                  beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZGEMV(RsBlasTranspose TransA, Double2 alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, Double2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::ZGEMV(RsBlasTranspose TransA, Double2 alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, Double2 beta, const sp<Allocation>& Y, int incY) {
     validateGEMV(mRS, Element::F64_2(mRS), TransA, A, X, incX, Y, incY);
     int M = A->getType()->getY();
     int N = A->getType()->getX();
@@ -248,8 +248,8 @@ void ScriptIntrinsicBLAS::ZGEMV(RsBlasTranspose TransA, Double2 alpha, sp<Alloca
                            beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SGBMV(RsBlasTranspose TransA, int KL, int KU, float alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, float beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::SGBMV(RsBlasTranspose TransA, int KL, int KU, float alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, float beta, const sp<Allocation>& Y, int incY) {
     // GBMV has the same validation requirements as GEMV + KL and KU >= 0
     validateGEMV(mRS, Element::F32(mRS), TransA, A, X, incX, Y, incY);
     if (KL < 0 || KU < 0) {
@@ -264,8 +264,8 @@ void ScriptIntrinsicBLAS::SGBMV(RsBlasTranspose TransA, int KL, int KU, float al
                                 beta, Y->getID(), incX, incY, KL, KU);
 }
 
-void ScriptIntrinsicBLAS::DGBMV(RsBlasTranspose TransA, int KL, int KU, double alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, double beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::DGBMV(RsBlasTranspose TransA, int KL, int KU, double alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, double beta, const sp<Allocation>& Y, int incY) {
     // GBMV has the same validation requirements as GEMV + KL and KU >= 0
     validateGEMV(mRS, Element::F64(mRS), TransA, A, X, incX, Y, incY);
     if (KL < 0 || KU < 0) {
@@ -280,8 +280,8 @@ void ScriptIntrinsicBLAS::DGBMV(RsBlasTranspose TransA, int KL, int KU, double a
                                 beta, Y->getID(), incX, incY, KL, KU);
 }
 
-void ScriptIntrinsicBLAS::CGBMV(RsBlasTranspose TransA, int KL, int KU, Float2 alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, Float2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::CGBMV(RsBlasTranspose TransA, int KL, int KU, Float2 alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, Float2 beta, const sp<Allocation>& Y, int incY) {
     // GBMV has the same validation requirements as GEMV + KL and KU >= 0
     validateGEMV(mRS, Element::F32_2(mRS), TransA, A, X, incX, Y, incY);
     if (KL < 0 || KU < 0) {
@@ -296,8 +296,8 @@ void ScriptIntrinsicBLAS::CGBMV(RsBlasTranspose TransA, int KL, int KU, Float2 a
                                  beta.x, beta.y, Y->getID(), incX, incY, KL, KU);
 }
 
-void ScriptIntrinsicBLAS::ZGBMV(RsBlasTranspose TransA, int KL, int KU, Double2 alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, Double2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::ZGBMV(RsBlasTranspose TransA, int KL, int KU, Double2 alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, Double2 beta, const sp<Allocation>& Y, int incY) {
     // GBMV has the same validation requirements as GEMV + KL and KU >= 0
     validateGEMV(mRS, Element::F64_2(mRS), TransA, A, X, incX, Y, incY);
     if (KL < 0 || KU < 0) {
@@ -312,8 +312,8 @@ void ScriptIntrinsicBLAS::ZGBMV(RsBlasTranspose TransA, int KL, int KU, Double2 
                            beta.x, beta.y, Y->getID(), incX, incY, KL, KU);
 }
 
-static void validateTRMV(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, RsBlasTranspose TransA,
-                         RsBlasDiag Diag, sp<Allocation> A, sp<Allocation> X, int incX) {
+static void validateTRMV(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo, RsBlasTranspose TransA,
+                         RsBlasDiag Diag, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     int N = A->getType()->getY();
     if ((int)A->getType()->getX() != N) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "A must be a square matrix for TRMV");
@@ -335,8 +335,8 @@ static void validateTRMV(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, RsBlasTr
     }
 }
 
-static int validateTPMV(RS* mRS, sp<const Element> e,  RsBlasUplo Uplo, RsBlasTranspose TransA,
-                        RsBlasDiag Diag, sp<Allocation> Ap, sp<Allocation> X, int incX) {
+static int validateTPMV(RS* mRS, const sp<const Element>& e,  RsBlasUplo Uplo, RsBlasTranspose TransA,
+                        RsBlasDiag Diag, const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     if (!Ap->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e)) {
         mRS->throwError(RS_ERROR_INVALID_ELEMENT, "Called BLAS with wrong Element type");
@@ -366,7 +366,7 @@ static int validateTPMV(RS* mRS, sp<const Element> e,  RsBlasUplo Uplo, RsBlasTr
 
 
 void ScriptIntrinsicBLAS::STRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     validateTRMV(mRS, Element::F32(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_strmv,
@@ -375,7 +375,7 @@ void ScriptIntrinsicBLAS::STRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::DTRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     validateTRMV(mRS, Element::F64(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dtrmv,
@@ -384,7 +384,7 @@ void ScriptIntrinsicBLAS::DTRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::CTRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     validateTRMV(mRS, Element::F32_2(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_ctrmv,
@@ -393,7 +393,7 @@ void ScriptIntrinsicBLAS::CTRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::ZTRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     validateTRMV(mRS, Element::F64_2(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_ztrmv,
@@ -402,7 +402,7 @@ void ScriptIntrinsicBLAS::ZTRMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::STBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBMV has the same requirements as TRMV + K >= 0
     if (K < 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "K must be greater than or equal to 0");
@@ -415,7 +415,7 @@ void ScriptIntrinsicBLAS::STBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::DTBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBMV has the same requirements as TRMV + K >= 0
     if (K < 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "K must be greater than or equal to 0");
@@ -428,7 +428,7 @@ void ScriptIntrinsicBLAS::DTBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::CTBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBMV has the same requirements as TRMV + K >= 0
     if (K < 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "K must be greater than or equal to 0");
@@ -441,7 +441,7 @@ void ScriptIntrinsicBLAS::CTBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::ZTBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBMV has the same requirements as TRMV + K >= 0
     if (K < 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "K must be greater than or equal to 0");
@@ -454,7 +454,7 @@ void ScriptIntrinsicBLAS::ZTBMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::STPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     int N = validateTPMV(mRS, Element::F32(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_stpmv,
                                 TransA, 0, 0, Uplo, Diag, 0, N, 0, 0,
@@ -462,7 +462,7 @@ void ScriptIntrinsicBLAS::STPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::DTPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     int N = validateTPMV(mRS, Element::F64(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dtpmv,
                                 TransA, 0, 0, Uplo, Diag, 0, N, 0, 0,
@@ -470,7 +470,7 @@ void ScriptIntrinsicBLAS::DTPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::CTPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap,  sp<Allocation> X,  int incX) {
+                                const sp<Allocation>& Ap,  const sp<Allocation>& X,  int incX) {
     int N = validateTPMV(mRS, Element::F32_2(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_ctpmv,
                                  TransA, 0, 0, Uplo, Diag, 0, N, 0, 0, 0,
@@ -478,7 +478,7 @@ void ScriptIntrinsicBLAS::CTPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::ZTPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     int N = validateTPMV(mRS, Element::F64_2(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_ztpmv,
                            TransA, 0, 0, Uplo, Diag, 0, N, 0, 0, 0,
@@ -486,7 +486,7 @@ void ScriptIntrinsicBLAS::ZTPMV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::STRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TRSV is the same as TRMV
     validateTRMV(mRS, Element::F32(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -496,7 +496,7 @@ void ScriptIntrinsicBLAS::STRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::DTRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A,  sp<Allocation> X,  int incX) {
+                                const sp<Allocation>& A,  const sp<Allocation>& X,  int incX) {
     // TRSV is the same as TRMV
     validateTRMV(mRS, Element::F64(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -507,7 +507,7 @@ void ScriptIntrinsicBLAS::DTRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::CTRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TRSV is the same as TRMV
     validateTRMV(mRS, Element::F32_2(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -518,7 +518,7 @@ void ScriptIntrinsicBLAS::CTRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::ZTRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> A, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TRSV is the same as TRMV
     validateTRMV(mRS, Element::F64_2(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -529,7 +529,7 @@ void ScriptIntrinsicBLAS::ZTRSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::STBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBSV is the same as TRMV + K >= 0
     validateTRMV(mRS, Element::F32(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -542,7 +542,7 @@ void ScriptIntrinsicBLAS::STBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::DTBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBSV is the same as TRMV + K >= 0
     validateTRMV(mRS, Element::F64(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -555,7 +555,7 @@ void ScriptIntrinsicBLAS::DTBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::CTBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBSV is the same as TRMV + K >= 0
     validateTRMV(mRS, Element::F32_2(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -568,7 +568,7 @@ void ScriptIntrinsicBLAS::CTBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::ZTBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                int K, sp<Allocation> A, sp<Allocation> X, int incX) {
+                                int K, const sp<Allocation>& A, const sp<Allocation>& X, int incX) {
     // TBSV is the same as TRMV + K >= 0
     validateTRMV(mRS, Element::F64_2(mRS), Uplo, TransA, Diag, A, X, incX);
     int N = A->getType()->getY();
@@ -581,7 +581,7 @@ void ScriptIntrinsicBLAS::ZTBSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::STPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     // TPSV is same as TPMV
     int N = validateTPMV(mRS, Element::F32(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_stpsv,
@@ -590,7 +590,7 @@ void ScriptIntrinsicBLAS::STPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::DTPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     // TPSV is same as TPMV
     int N = validateTPMV(mRS, Element::F64(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dtpsv,
@@ -599,7 +599,7 @@ void ScriptIntrinsicBLAS::DTPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::CTPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     // TPSV is same as TPMV
     int N = validateTPMV(mRS, Element::F32_2(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_ctpsv,
@@ -608,7 +608,7 @@ void ScriptIntrinsicBLAS::CTPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 }
 
 void ScriptIntrinsicBLAS::ZTPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                sp<Allocation> Ap, sp<Allocation> X, int incX) {
+                                const sp<Allocation>& Ap, const sp<Allocation>& X, int incX) {
     // TPSV is same as TPMV
     int N = validateTPMV(mRS, Element::F64_2(mRS), Uplo, TransA, Diag, Ap, X, incX);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_ztpsv,
@@ -619,8 +619,8 @@ void ScriptIntrinsicBLAS::ZTPSV(RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasD
 /**
  * Level 2, S and D only
  */
-static int validateSYMV(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Allocation> A,
-                        sp<Allocation> X, sp<Allocation> Y, int incX, int incY) {
+static int validateSYMV(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo, const sp<Allocation>& A,
+                        const sp<Allocation>& X, const sp<Allocation>& Y, int incX, int incY) {
     int N = A->getType()->getY();
     if ((int)A->getType()->getX() != N) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "A must be a square matrix for SYMV");
@@ -647,8 +647,8 @@ static int validateSYMV(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Alloca
     }
     return N;
 }
-static int validateSPMV(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Allocation> Ap,
-                        sp<Allocation> X, int incX, sp<Allocation> Y, int incY) {
+static int validateSPMV(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo, const sp<Allocation>& Ap,
+                        const sp<Allocation>& X, int incX, const sp<Allocation>& Y, int incY) {
     if (!Ap->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e) ||
         !Y->getType()->getElement()->isCompatible(e)) {
@@ -680,8 +680,8 @@ static int validateSPMV(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Alloca
 
     return N;
 }
-static void validateGER(RS* mRS, sp<const Element> e, sp<Allocation> X, int incX,
-                        sp<Allocation> Y, int incY, sp<Allocation> A) {
+static void validateGER(RS* mRS, const sp<const Element>& e, const sp<Allocation>& X, int incX,
+                        const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e) ||
         !Y->getType()->getElement()->isCompatible(e) ) {
@@ -712,8 +712,8 @@ static void validateGER(RS* mRS, sp<const Element> e, sp<Allocation> X, int incX
 
 
 }
-static int validateSYR(RS* mRS, sp<const Element> e, RsBlasUplo Uplo,
-                       sp<Allocation> X, int incX, sp<Allocation> A) {
+static int validateSYR(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo,
+                       const sp<Allocation>& X, int incX, const sp<Allocation>& A) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e)) {
         mRS->throwError(RS_ERROR_INVALID_ELEMENT, "Called BLAS with wrong Element type");
@@ -736,8 +736,8 @@ static int validateSYR(RS* mRS, sp<const Element> e, RsBlasUplo Uplo,
     }
     return N;
 }
-static int validateSPR(RS* mRS, sp<const Element> e, RsBlasUplo Uplo,
-                       sp<Allocation> X, int incX, sp<Allocation> Ap) {
+static int validateSPR(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo,
+                       const sp<Allocation>& X, int incX, const sp<Allocation>& Ap) {
     if (!Ap->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e)) {
         mRS->throwError(RS_ERROR_INVALID_ELEMENT, "Called BLAS with wrong Element type");
@@ -765,8 +765,8 @@ static int validateSPR(RS* mRS, sp<const Element> e, RsBlasUplo Uplo,
     return N;
 }
 
-static int validateSYR2(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Allocation> X,
-                        int incX, sp<Allocation> Y, int incY, sp<Allocation> A) {
+static int validateSYR2(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo, const sp<Allocation>& X,
+                        int incX, const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e) ||
         !Y->getType()->getElement()->isCompatible(e)) {
@@ -793,8 +793,8 @@ static int validateSYR2(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Alloca
     return N;
 
 }
-static int validateSPR2(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Allocation> X,
-                        int incX, sp<Allocation> Y, int incY, sp<Allocation> Ap) {
+static int validateSPR2(RS* mRS, const sp<const Element>& e, RsBlasUplo Uplo, const sp<Allocation>& X,
+                        int incX, const sp<Allocation>& Y, int incY, const sp<Allocation>& Ap) {
     if (!Ap->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e) ||
         !Y->getType()->getElement()->isCompatible(e)) {
@@ -824,16 +824,16 @@ static int validateSPR2(RS* mRS, sp<const Element> e, RsBlasUplo Uplo, sp<Alloca
     return N;
 }
 
-void ScriptIntrinsicBLAS::SSYMV(RsBlasUplo Uplo, float alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, float beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::SSYMV(RsBlasUplo Uplo, float alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, float beta, const sp<Allocation>& Y, int incY) {
     int N = validateSYMV(mRS, Element::F32(mRS), Uplo, A, X, Y, incX, incY);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_ssymv,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 A->getID(), X->getID(), beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SSBMV(RsBlasUplo Uplo, int K, float alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, float beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::SSBMV(RsBlasUplo Uplo, int K, float alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, float beta, const sp<Allocation>& Y, int incY) {
     // SBMV is the same as SYMV + K >= 0
     if (K < 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "K must be greater than or equal to 0");
@@ -844,16 +844,16 @@ void ScriptIntrinsicBLAS::SSBMV(RsBlasUplo Uplo, int K, float alpha, sp<Allocati
                                 A->getID(), X->getID(), beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SSPMV(RsBlasUplo Uplo, float alpha, sp<Allocation> Ap, sp<Allocation> X,
-                                int incX, float beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::SSPMV(RsBlasUplo Uplo, float alpha, const sp<Allocation>& Ap, const sp<Allocation>& X,
+                                int incX, float beta, const sp<Allocation>& Y, int incY) {
     int N = validateSPMV(mRS, Element::F32(mRS), Uplo, Ap, X, incX, Y, incY);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_sspmv,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 Ap->getID(), X->getID(), beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SGER(float alpha, sp<Allocation> X, int incX,
-                               sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::SGER(float alpha, const sp<Allocation>& X, int incX,
+                               const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     int M = A->getType()->getY();
     int N = A->getType()->getX();
     validateGER(mRS, Element::F32(mRS), X, incX, Y, incY, A);
@@ -862,48 +862,48 @@ void ScriptIntrinsicBLAS::SGER(float alpha, sp<Allocation> X, int incX,
                                 X->getID(), Y->getID(), 0.f, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SSYR(RsBlasUplo Uplo, float alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::SSYR(RsBlasUplo Uplo, float alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& A) {
     int N = validateSYR(mRS, Element::F32(mRS), Uplo, X, incX, A);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_ssyr,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 X->getID(), A->getID(), 0.f, 0, incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SSPR(RsBlasUplo Uplo, float alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::SSPR(RsBlasUplo Uplo, float alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& Ap) {
     int N = validateSPR(mRS, Element::F32(mRS), Uplo, X, incX, Ap);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_sspr,
                                 0, 0, 0, Uplo, 0, 0, N, 0,
                                 alpha, X->getID(), Ap->getID(), 0.f, 0, incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SSYR2(RsBlasUplo Uplo, float alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::SSYR2(RsBlasUplo Uplo, float alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     int N = validateSYR2(mRS, Element::F32(mRS), Uplo, X, incX, Y, incY, A);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_ssyr2,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 X->getID(), Y->getID(), 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::SSPR2(RsBlasUplo Uplo, float alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::SSPR2(RsBlasUplo Uplo, float alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& Ap) {
     int N = validateSPR2(mRS, Element::F32(mRS), Uplo, X, incX, Y, incY, Ap);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_sspr2,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 X->getID(), Y->getID(), 0, Ap->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSYMV(RsBlasUplo Uplo, double alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, double beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::DSYMV(RsBlasUplo Uplo, double alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, double beta, const sp<Allocation>& Y, int incY) {
     int N = validateSYMV(mRS, Element::F64(mRS), Uplo, A, X, Y, incX, incY);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dsymv,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 A->getID(), X->getID(), beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSBMV(RsBlasUplo Uplo, int K, double alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, double beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::DSBMV(RsBlasUplo Uplo, int K, double alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, double beta, const sp<Allocation>& Y, int incY) {
     // SBMV is the same as SYMV + K >= 0
     if (K < 0) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "K must be greater than or equal to 0");
@@ -914,16 +914,16 @@ void ScriptIntrinsicBLAS::DSBMV(RsBlasUplo Uplo, int K, double alpha, sp<Allocat
                                 A->getID(), X->getID(), beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSPMV(RsBlasUplo Uplo, double alpha, sp<Allocation> Ap, sp<Allocation> X,
-                                int incX, double beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::DSPMV(RsBlasUplo Uplo, double alpha, const sp<Allocation>& Ap, const sp<Allocation>& X,
+                                int incX, double beta, const sp<Allocation>& Y, int incY) {
     int N = validateSPMV(mRS, Element::F64(mRS), Uplo, Ap, X, incX, Y, incY);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dspmv,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 Ap->getID(), X->getID(), beta, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DGER(double alpha, sp<Allocation> X, int incX, sp<Allocation> Y,
-                               int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::DGER(double alpha, const sp<Allocation>& X, int incX, const sp<Allocation>& Y,
+                               int incY, const sp<Allocation>& A) {
     int M = A->getType()->getY();
     int N = A->getType()->getX();
     validateGER(mRS, Element::F64(mRS), X, incX, Y, incY, A);
@@ -932,32 +932,32 @@ void ScriptIntrinsicBLAS::DGER(double alpha, sp<Allocation> X, int incX, sp<Allo
                                 X->getID(), Y->getID(), 0.f, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSYR(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::DSYR(RsBlasUplo Uplo, double alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& A) {
     int N = validateSYR(mRS, Element::F64(mRS), Uplo, X, incX, A);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dsyr,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 X->getID(), A->getID(), 0.f, 0, incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSPR(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::DSPR(RsBlasUplo Uplo, double alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& Ap) {
     int N = validateSPR(mRS, Element::F64(mRS), Uplo, X, incX, Ap);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dspr,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 X->getID(), Ap->getID(), 0.f, 0, incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSYR2(RsBlasUplo Uplo, double alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::DSYR2(RsBlasUplo Uplo, double alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     int N = validateSYR2(mRS, Element::F64(mRS), Uplo, X, incX, Y, incY, A);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dsyr2,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
                                 X->getID(), Y->getID(), 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::DSPR2(RsBlasUplo Uplo, double alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::DSPR2(RsBlasUplo Uplo, double alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& Ap) {
     int N = validateSPR2(mRS, Element::F64(mRS), Uplo, X, incX, Y, incY, Ap);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dspr2,
                                 0, 0, 0, Uplo, 0, 0, N, 0, alpha,
@@ -969,8 +969,8 @@ void ScriptIntrinsicBLAS::DSPR2(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
  * Level 2, C and Z only
  */
 
-static void validateGERU(RS* mRS, sp<const Element> e, sp<Allocation> X, int incX,
-                         sp<Allocation> Y, int incY, sp<Allocation> A) {
+static void validateGERU(RS* mRS, const sp<const Element>& e, const sp<Allocation>& X, int incX,
+                         const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !X->getType()->getElement()->isCompatible(e) ||
         !Y->getType()->getElement()->isCompatible(e)) {
@@ -996,8 +996,8 @@ static void validateGERU(RS* mRS, sp<const Element> e, sp<Allocation> X, int inc
 
 }
 
-void ScriptIntrinsicBLAS::CHEMV(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, Float2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::CHEMV(RsBlasUplo Uplo, Float2 alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, Float2 beta, const sp<Allocation>& Y, int incY) {
     // HEMV is the same as SYR2 validation-wise
     int N = validateSYR2(mRS, Element::F32_2(mRS), Uplo, X, incX, Y, incY, A);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_chemv,
@@ -1006,8 +1006,8 @@ void ScriptIntrinsicBLAS::CHEMV(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> A,
                                  beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CHBMV(RsBlasUplo Uplo, int K, Float2 alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, Float2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::CHBMV(RsBlasUplo Uplo, int K, Float2 alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, Float2 beta, const sp<Allocation>& Y, int incY) {
     // HBMV is the same as SYR2 validation-wise
     int N = validateSYR2(mRS, Element::F32_2(mRS), Uplo, X, incX, Y, incY, A);
     if (K < 0) {
@@ -1019,8 +1019,8 @@ void ScriptIntrinsicBLAS::CHBMV(RsBlasUplo Uplo, int K, Float2 alpha, sp<Allocat
                                  beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CHPMV(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> Ap,
-                                sp<Allocation> X, int incX, Float2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::CHPMV(RsBlasUplo Uplo, Float2 alpha, const sp<Allocation>& Ap,
+                                const sp<Allocation>& X, int incX, Float2 beta, const sp<Allocation>& Y, int incY) {
     // HPMV is the same as SPR2
     int N = validateSPR2(mRS, Element::F32_2(mRS), Uplo, X, incX, Y, incY, Ap);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_chpmv,
@@ -1029,8 +1029,8 @@ void ScriptIntrinsicBLAS::CHPMV(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> Ap
                                  beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CGERU(Float2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::CGERU(Float2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     validateGERU(mRS, Element::F32_2(mRS), X, incX, Y, incY, A);
     int M = A->getType()->getY();
     int N = A->getType()->getX();
@@ -1040,8 +1040,8 @@ void ScriptIntrinsicBLAS::CGERU(Float2 alpha, sp<Allocation> X, int incX,
                                  0, 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CGERC(Float2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::CGERC(Float2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     // Same as GERU
     validateGERU(mRS, Element::F32_2(mRS), X, incX, Y, incY, A);
     int M = A->getType()->getY();
@@ -1052,8 +1052,8 @@ void ScriptIntrinsicBLAS::CGERC(Float2 alpha, sp<Allocation> X, int incX,
                                  0, 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CHER(RsBlasUplo Uplo, float alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::CHER(RsBlasUplo Uplo, float alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& A) {
     // Same as SYR
     int N = validateSYR(mRS, Element::F32_2(mRS), Uplo, X, incX, A);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_cher,
@@ -1062,8 +1062,8 @@ void ScriptIntrinsicBLAS::CHER(RsBlasUplo Uplo, float alpha, sp<Allocation> X,
                                  0, 0, A->getID(), incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CHPR(RsBlasUplo Uplo, float alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::CHPR(RsBlasUplo Uplo, float alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& Ap) {
     // Equivalent to SPR for validation
     int N = validateSPR(mRS, Element::F32_2(mRS), Uplo, X, incX, Ap);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_chpr,
@@ -1072,8 +1072,8 @@ void ScriptIntrinsicBLAS::CHPR(RsBlasUplo Uplo, float alpha, sp<Allocation> X,
                                  0, 0, Ap->getID(), incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CHER2(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::CHER2(RsBlasUplo Uplo, Float2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     // Same as SYR2
     int N = validateSYR2(mRS, Element::F32_2(mRS), Uplo, X, incX, Y, incY, A);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_cher2,
@@ -1082,8 +1082,8 @@ void ScriptIntrinsicBLAS::CHER2(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> X,
                                  0, 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::CHPR2(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::CHPR2(RsBlasUplo Uplo, Float2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& Ap) {
     // Same as SPR2
     int N = validateSPR2(mRS, Element::F32_2(mRS), Uplo, X, incX, Y, incY, Ap);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_chpr2,
@@ -1092,8 +1092,8 @@ void ScriptIntrinsicBLAS::CHPR2(RsBlasUplo Uplo, Float2 alpha, sp<Allocation> X,
                                  0, 0, Ap->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHEMV(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> A,
-                                sp<Allocation> X, int incX, Double2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::ZHEMV(RsBlasUplo Uplo, Double2 alpha, const sp<Allocation>& A,
+                                const sp<Allocation>& X, int incX, Double2 beta, const sp<Allocation>& Y, int incY) {
     // HEMV is the same as SYR2 validation-wise
     int N = validateSYR2(mRS, Element::F64_2(mRS), Uplo, X, incX, Y, incY, A);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zhemv,
@@ -1102,8 +1102,8 @@ void ScriptIntrinsicBLAS::ZHEMV(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> A
                            beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHBMV(RsBlasUplo Uplo, int K, Double2 alpha, sp<Allocation> A, sp<Allocation> X,
-                                int incX, Double2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::ZHBMV(RsBlasUplo Uplo, int K, Double2 alpha, const sp<Allocation>& A, const sp<Allocation>& X,
+                                int incX, Double2 beta, const sp<Allocation>& Y, int incY) {
     // HBMV is the same as SYR2 validation-wise
     int N = validateSYR2(mRS, Element::F64_2(mRS), Uplo, X, incX, Y, incY, A);
     if (K < 0) {
@@ -1115,8 +1115,8 @@ void ScriptIntrinsicBLAS::ZHBMV(RsBlasUplo Uplo, int K, Double2 alpha, sp<Alloca
                            beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHPMV(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> Ap, sp<Allocation> X,
-                                int incX, Double2 beta, sp<Allocation> Y, int incY) {
+void ScriptIntrinsicBLAS::ZHPMV(RsBlasUplo Uplo, Double2 alpha, const sp<Allocation>& Ap, const sp<Allocation>& X,
+                                int incX, Double2 beta, const sp<Allocation>& Y, int incY) {
     // HPMV is the same as SPR2
     int N = validateSPR2(mRS, Element::F64_2(mRS), Uplo, X, incX, Y, incY, Ap);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zhpmv,
@@ -1125,8 +1125,8 @@ void ScriptIntrinsicBLAS::ZHPMV(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> A
                            beta.x, beta.y, Y->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZGERU(Double2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::ZGERU(Double2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     validateGERU(mRS, Element::F64_2(mRS), X, incX, Y, incY, A);
     int M = A->getType()->getY();
     int N = A->getType()->getX();
@@ -1136,8 +1136,8 @@ void ScriptIntrinsicBLAS::ZGERU(Double2 alpha, sp<Allocation> X, int incX,
                            0, 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZGERC(Double2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::ZGERC(Double2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     // Same as GERU
     validateGERU(mRS, Element::F64_2(mRS), X, incX, Y, incY, A);
     int M = A->getType()->getY();
@@ -1148,8 +1148,8 @@ void ScriptIntrinsicBLAS::ZGERC(Double2 alpha, sp<Allocation> X, int incX,
                            0, 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHER(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::ZHER(RsBlasUplo Uplo, double alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& A) {
     // Same as SYR
     int N = validateSYR(mRS, Element::F64_2(mRS), Uplo, X, incX, A);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zher,
@@ -1158,8 +1158,8 @@ void ScriptIntrinsicBLAS::ZHER(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
                            0, 0, A->getID(), incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHPR(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
-                               int incX, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::ZHPR(RsBlasUplo Uplo, double alpha, const sp<Allocation>& X,
+                               int incX, const sp<Allocation>& Ap) {
     // Equivalent to SPR for validation
     int N = validateSPR(mRS, Element::F64_2(mRS), Uplo, X, incX, Ap);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zhpr,
@@ -1168,8 +1168,8 @@ void ScriptIntrinsicBLAS::ZHPR(RsBlasUplo Uplo, double alpha, sp<Allocation> X,
                            0, 0, Ap->getID(), incX, 0, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHER2(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> A) {
+void ScriptIntrinsicBLAS::ZHER2(RsBlasUplo Uplo, Double2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& A) {
     // Same as SYR2
     int N = validateSYR2(mRS, Element::F64_2(mRS), Uplo, X, incX, Y, incY, A);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zher2,
@@ -1178,8 +1178,8 @@ void ScriptIntrinsicBLAS::ZHER2(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> X
                            0, 0, A->getID(), incX, incY, 0, 0);
 }
 
-void ScriptIntrinsicBLAS::ZHPR2(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> X, int incX,
-                                sp<Allocation> Y, int incY, sp<Allocation> Ap) {
+void ScriptIntrinsicBLAS::ZHPR2(RsBlasUplo Uplo, Double2 alpha, const sp<Allocation>& X, int incX,
+                                const sp<Allocation>& Y, int incY, const sp<Allocation>& Ap) {
     // Same as SPR2
     int N = validateSPR2(mRS, Element::F64_2(mRS), Uplo, X, incX, Y, incY, Ap);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zhpr2,
@@ -1193,8 +1193,8 @@ void ScriptIntrinsicBLAS::ZHPR2(RsBlasUplo Uplo, Double2 alpha, sp<Allocation> X
  * Level 3 BLAS
  */
 
-static void validateL3(RS* mRS, sp<const Element> e, int TransA, int TransB, int Side,
-                       sp<Allocation> A, sp<Allocation> B, sp<Allocation> C) {
+static void validateL3(RS* mRS, const sp<const Element>& e, int TransA, int TransB, int Side,
+                       const sp<Allocation>& A, const sp<Allocation>& B, const sp<Allocation>& C) {
     int aM = -1, aN = -1, bM = -1, bN = -1, cM = -1, cN = -1;
     if ((A != nullptr && !A->getType()->getElement()->isCompatible(e)) ||
         (B != nullptr && !B->getType()->getElement()->isCompatible(e)) ||
@@ -1262,7 +1262,7 @@ static void validateL3(RS* mRS, sp<const Element> e, int TransA, int TransB, int
 }
 
 void ScriptIntrinsicBLAS::SGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, float alpha,
-                                sp<Allocation> A, sp<Allocation> B, float beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, float beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F32(mRS), TransA, TransB, 0, A, B, C);
 
     int M = -1, N = -1, K = -1;
@@ -1285,7 +1285,7 @@ void ScriptIntrinsicBLAS::SGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, 
 }
 
 void ScriptIntrinsicBLAS::DGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, double alpha,
-                                sp<Allocation> A, sp<Allocation> B, double beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, double beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F64(mRS), TransA, TransB, 0, A, B, C);
     int M = -1, N = -1, K = -1;
     if (TransA != RsBlasNoTrans) {
@@ -1307,7 +1307,7 @@ void ScriptIntrinsicBLAS::DGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, 
 }
 
 void ScriptIntrinsicBLAS::CGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, Float2 alpha,
-                                sp<Allocation> A, sp<Allocation> B, Float2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, Float2 beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F32_2(mRS), TransA, TransB, 0, A, B, C);
     int M = -1, N = -1, K = -1;
     if (TransA != RsBlasNoTrans) {
@@ -1329,7 +1329,7 @@ void ScriptIntrinsicBLAS::CGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, 
 }
 
 void ScriptIntrinsicBLAS::ZGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, Double2 alpha,
-                                sp<Allocation> A, sp<Allocation> B, Double2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, Double2 beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F64_2(mRS), TransA, TransB, 0, A, B, C);
     int M = -1, N = -1, K = -1;
     if (TransA != RsBlasNoTrans) {
@@ -1351,7 +1351,7 @@ void ScriptIntrinsicBLAS::ZGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, 
 }
 
 void ScriptIntrinsicBLAS::SSYMM(RsBlasSide Side, RsBlasUplo Uplo, float alpha,
-                                sp<Allocation> A, sp<Allocation> B, float beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, float beta, const sp<Allocation>& C) {
     //For SYMM, Matrix A should be symmetric
     if (A->getType()->getX() != A->getType()->getY()) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "Matrix A is not symmetric");
@@ -1364,7 +1364,7 @@ void ScriptIntrinsicBLAS::SSYMM(RsBlasSide Side, RsBlasUplo Uplo, float alpha,
 }
 
 void ScriptIntrinsicBLAS::DSYMM(RsBlasSide Side, RsBlasUplo Uplo, double alpha,
-                                sp<Allocation> A, sp<Allocation> B, double beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, double beta, const sp<Allocation>& C) {
     if (A->getType()->getX() != A->getType()->getY()) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "Matrix A is not symmetric");
     }
@@ -1376,7 +1376,7 @@ void ScriptIntrinsicBLAS::DSYMM(RsBlasSide Side, RsBlasUplo Uplo, double alpha,
 }
 
 void ScriptIntrinsicBLAS::CSYMM(RsBlasSide Side, RsBlasUplo Uplo, Float2 alpha,
-                                sp<Allocation> A, sp<Allocation> B, Float2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, Float2 beta, const sp<Allocation>& C) {
     if (A->getType()->getX() != A->getType()->getY()) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "Matrix A is not symmetric");
     }
@@ -1388,7 +1388,7 @@ void ScriptIntrinsicBLAS::CSYMM(RsBlasSide Side, RsBlasUplo Uplo, Float2 alpha,
 }
 
 void ScriptIntrinsicBLAS::ZSYMM(RsBlasSide Side, RsBlasUplo Uplo, Double2 alpha,
-                                sp<Allocation> A, sp<Allocation> B, Double2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, Double2 beta, const sp<Allocation>& C) {
     if (A->getType()->getX() != A->getType()->getY()) {
         mRS->throwError(RS_ERROR_INVALID_PARAMETER, "Matrix A is not symmetric");
     }
@@ -1400,7 +1400,7 @@ void ScriptIntrinsicBLAS::ZSYMM(RsBlasSide Side, RsBlasUplo Uplo, Double2 alpha,
 }
 
 void ScriptIntrinsicBLAS::SSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, float alpha,
-                                sp<Allocation> A, float beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, float beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F32(mRS), Trans, 0, 0, A, nullptr, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1415,7 +1415,7 @@ void ScriptIntrinsicBLAS::SSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, float al
 }
 
 void ScriptIntrinsicBLAS::DSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, double alpha,
-                                sp<Allocation> A, double beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, double beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F64(mRS), Trans, 0, 0, A, nullptr, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1430,7 +1430,7 @@ void ScriptIntrinsicBLAS::DSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, double a
 }
 
 void ScriptIntrinsicBLAS::CSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, Float2 alpha,
-                                sp<Allocation> A, Float2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, Float2 beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F32_2(mRS), Trans, 0, 0, A, nullptr, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1445,7 +1445,7 @@ void ScriptIntrinsicBLAS::CSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, Float2 a
 }
 
 void ScriptIntrinsicBLAS::ZSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, Double2 alpha,
-                                sp<Allocation> A, Double2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, Double2 beta, const sp<Allocation>& C) {
     validateL3(mRS, Element::F64_2(mRS), Trans, 0, 0, A, nullptr, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1459,8 +1459,8 @@ void ScriptIntrinsicBLAS::ZSYRK(RsBlasUplo Uplo, RsBlasTranspose Trans, Double2 
                            beta.x, beta.y, C->getID(), 0, 0, 0, 0);
 }
 
-static void validateSYR2K(RS* mRS, sp<const Element> e, RsBlasTranspose Trans,
-                          sp<Allocation> A, sp<Allocation> B, sp<Allocation> C) {
+static void validateSYR2K(RS* mRS, const sp<const Element>& e, RsBlasTranspose Trans,
+                          const sp<Allocation>& A, const sp<Allocation>& B, const sp<Allocation>& C) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !B->getType()->getElement()->isCompatible(e) ||
         !C->getType()->getElement()->isCompatible(e)) {
@@ -1486,7 +1486,7 @@ static void validateSYR2K(RS* mRS, sp<const Element> e, RsBlasTranspose Trans,
 }
 
 void ScriptIntrinsicBLAS::SSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, float alpha,
-                                 sp<Allocation> A, sp<Allocation> B, float beta, sp<Allocation> C) {
+                                 const sp<Allocation>& A, const sp<Allocation>& B, float beta, const sp<Allocation>& C) {
     validateSYR2K(mRS, Element::F32(mRS), Trans, A, B, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1501,7 +1501,7 @@ void ScriptIntrinsicBLAS::SSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, float a
 }
 
 void ScriptIntrinsicBLAS::DSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, double alpha,
-                                 sp<Allocation> A, sp<Allocation> B, double beta, sp<Allocation> C) {
+                                 const sp<Allocation>& A, const sp<Allocation>& B, double beta, const sp<Allocation>& C) {
     validateSYR2K(mRS, Element::F64(mRS), Trans, A, B, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1516,7 +1516,7 @@ void ScriptIntrinsicBLAS::DSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, double 
 }
 
 void ScriptIntrinsicBLAS::CSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Float2 alpha,
-                                 sp<Allocation> A, sp<Allocation> B, Float2 beta, sp<Allocation> C) {
+                                 const sp<Allocation>& A, const sp<Allocation>& B, Float2 beta, const sp<Allocation>& C) {
     validateSYR2K(mRS, Element::F32_2(mRS), Trans, A, B, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1531,7 +1531,7 @@ void ScriptIntrinsicBLAS::CSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Float2 
 }
 
 void ScriptIntrinsicBLAS::ZSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Double2 alpha,
-                                 sp<Allocation> A, sp<Allocation> B, Double2 beta, sp<Allocation> C) {
+                                 const sp<Allocation>& A, const sp<Allocation>& B, Double2 beta, const sp<Allocation>& C) {
     validateSYR2K(mRS, Element::F64_2(mRS), Trans, A, B, C);
     int K = -1;
     if (Trans != RsBlasNoTrans) {
@@ -1545,8 +1545,8 @@ void ScriptIntrinsicBLAS::ZSYR2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Double2
                            beta.x, beta.y, C->getID(), 0, 0, 0, 0);
 }
 
-static void validateTRMM(RS* mRS, sp<const Element> e, RsBlasSide Side, RsBlasTranspose TransA,
-                         sp<Allocation> A, sp<Allocation> B) {
+static void validateTRMM(RS* mRS, const sp<const Element>& e, RsBlasSide Side, RsBlasTranspose TransA,
+                         const sp<Allocation>& A, const sp<Allocation>& B) {
     int aM = -1, aN = -1, bM = -1, bN = -1;
     if (!A->getType()->getElement()->isCompatible(e) ||
         !B->getType()->getElement()->isCompatible(e)) {
@@ -1573,7 +1573,7 @@ static void validateTRMM(RS* mRS, sp<const Element> e, RsBlasSide Side, RsBlasTr
 }
 
 void ScriptIntrinsicBLAS::STRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                float alpha, sp<Allocation> A, sp<Allocation> B) {
+                                float alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRMM(mRS, Element::F32(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_strmm,
                                 TransA, 0, Side, Uplo, Diag,\
@@ -1582,7 +1582,7 @@ void ScriptIntrinsicBLAS::STRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
 }
 
 void ScriptIntrinsicBLAS::DTRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                double alpha, sp<Allocation> A, sp<Allocation> B) {
+                                double alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRMM(mRS, Element::F64(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dtrmm,
                                 TransA, 0, Side, Uplo, Diag,
@@ -1591,7 +1591,7 @@ void ScriptIntrinsicBLAS::DTRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
 }
 
 void ScriptIntrinsicBLAS::CTRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                Float2 alpha, sp<Allocation> A, sp<Allocation> B) {
+                                Float2 alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRMM(mRS, Element::F32_2(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_ctrmm,
                                  TransA, 0, Side, Uplo, Diag,
@@ -1600,7 +1600,7 @@ void ScriptIntrinsicBLAS::CTRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
 }
 
 void ScriptIntrinsicBLAS::ZTRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                Double2 alpha, sp<Allocation> A, sp<Allocation> B) {
+                                Double2 alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRMM(mRS, Element::F64_2(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_ztrmm,
                            TransA, 0, Side, Uplo, Diag,
@@ -1608,8 +1608,8 @@ void ScriptIntrinsicBLAS::ZTRMM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
                            alpha.x, alpha.y, A->getID(), B->getID(), 0, 0, 0, 0, 0, 0, 0);
 }
 
-static void validateTRSM(RS* mRS, sp<const Element> e, RsBlasSide Side, RsBlasTranspose TransA,
-                         sp<Allocation> A, sp<Allocation> B) {
+static void validateTRSM(RS* mRS, const sp<const Element>& e, RsBlasSide Side, RsBlasTranspose TransA,
+                         const sp<Allocation>& A, const sp<Allocation>& B) {
     int adim = -1, bM = -1, bN = -1;
     if (!A->getType()->getElement()->isCompatible(e) ||
         !B->getType()->getElement()->isCompatible(e)) {
@@ -1638,7 +1638,7 @@ static void validateTRSM(RS* mRS, sp<const Element> e, RsBlasSide Side, RsBlasTr
 }
 
 void ScriptIntrinsicBLAS::STRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                float alpha, sp<Allocation> A, sp<Allocation> B) {
+                                float alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRSM(mRS, Element::F32(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Single(mRS, mRS->getContext(), getID(), RsBlas_strsm,
                                 TransA, 0, Side, Uplo, Diag,
@@ -1647,7 +1647,7 @@ void ScriptIntrinsicBLAS::STRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
 }
 
 void ScriptIntrinsicBLAS::DTRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                double alpha, sp<Allocation> A, sp<Allocation> B) {
+                                double alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRSM(mRS, Element::F64(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Double(mRS, mRS->getContext(), getID(), RsBlas_dtrsm,
                                 TransA, 0, Side, Uplo, Diag,
@@ -1656,7 +1656,7 @@ void ScriptIntrinsicBLAS::DTRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
 }
 
 void ScriptIntrinsicBLAS::CTRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                Float2 alpha, sp<Allocation> A, sp<Allocation> B) {
+                                Float2 alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRSM(mRS, Element::F32_2(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_ctrsm,
                                  TransA, 0, Side, Uplo, Diag,
@@ -1665,7 +1665,7 @@ void ScriptIntrinsicBLAS::CTRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
 }
 
 void ScriptIntrinsicBLAS::ZTRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspose TransA, RsBlasDiag Diag,
-                                Double2 alpha, sp<Allocation> A, sp<Allocation> B) {
+                                Double2 alpha, const sp<Allocation>& A, const sp<Allocation>& B) {
     validateTRSM(mRS, Element::F64_2(mRS), Side, TransA, A, B);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_ztrsm,
                            TransA, 0, Side, Uplo, Diag,
@@ -1673,8 +1673,8 @@ void ScriptIntrinsicBLAS::ZTRSM(RsBlasSide Side, RsBlasUplo Uplo, RsBlasTranspos
                            alpha.x, alpha.y, A->getID(), B->getID(), 0, 0, 0, 0, 0, 0, 0);
 }
 
-static void validateHEMM(RS* mRS, sp<const Element> e, RsBlasSide Side,
-                         sp<Allocation> A, sp<Allocation> B, sp<Allocation> C) {
+static void validateHEMM(RS* mRS, const sp<const Element>& e, RsBlasSide Side,
+                         const sp<Allocation>& A, const sp<Allocation>& B, const sp<Allocation>& C) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !B->getType()->getElement()->isCompatible(e) ||
         !C->getType()->getElement()->isCompatible(e)) {
@@ -1697,7 +1697,7 @@ static void validateHEMM(RS* mRS, sp<const Element> e, RsBlasSide Side,
 }
 
 void ScriptIntrinsicBLAS::CHEMM(RsBlasSide Side, RsBlasUplo Uplo, Float2 alpha,
-                                sp<Allocation> A, sp<Allocation> B, Float2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, Float2 beta, const sp<Allocation>& C) {
     validateHEMM(mRS, Element::F32_2(mRS), Side, A, B, C);
     nScriptIntrinsicBLAS_Complex(mRS, mRS->getContext(), getID(), RsBlas_chemm,
                                  0, 0, Side, Uplo, 0,
@@ -1707,7 +1707,7 @@ void ScriptIntrinsicBLAS::CHEMM(RsBlasSide Side, RsBlasUplo Uplo, Float2 alpha,
 }
 
 void ScriptIntrinsicBLAS::ZHEMM(RsBlasSide Side, RsBlasUplo Uplo, Double2 alpha,
-                                sp<Allocation> A, sp<Allocation> B, Double2 beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, const sp<Allocation>& B, Double2 beta, const sp<Allocation>& C) {
     validateHEMM(mRS, Element::F64_2(mRS), Side, A, B, C);
     nScriptIntrinsicBLAS_Z(mRS, mRS->getContext(), getID(), RsBlas_zhemm,
                            0, 0, Side, Uplo, 0,
@@ -1716,8 +1716,8 @@ void ScriptIntrinsicBLAS::ZHEMM(RsBlasSide Side, RsBlasUplo Uplo, Double2 alpha,
                            beta.x, beta.y, C->getID(), 0, 0, 0, 0);
 }
 
-static void validateHERK(RS* mRS, sp<const Element> e, RsBlasTranspose Trans,
-                         sp<Allocation> A, sp<Allocation> C) {
+static void validateHERK(RS* mRS, const sp<const Element>& e, RsBlasTranspose Trans,
+                         const sp<Allocation>& A, const sp<Allocation>& C) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !C->getType()->getElement()->isCompatible(e)) {
         mRS->throwError(RS_ERROR_INVALID_ELEMENT, "Called BLAS with wrong Element type");
@@ -1741,7 +1741,7 @@ static void validateHERK(RS* mRS, sp<const Element> e, RsBlasTranspose Trans,
 }
 
 void ScriptIntrinsicBLAS::CHERK(RsBlasUplo Uplo, RsBlasTranspose Trans, float alpha,
-                                sp<Allocation> A, float beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, float beta, const sp<Allocation>& C) {
     validateHERK(mRS, Element::F32_2(mRS), Trans, A, C);
     int k = 0;
     if (Trans == RsBlasConjTrans) {
@@ -1756,7 +1756,7 @@ void ScriptIntrinsicBLAS::CHERK(RsBlasUplo Uplo, RsBlasTranspose Trans, float al
 }
 
 void ScriptIntrinsicBLAS::ZHERK(RsBlasUplo Uplo, RsBlasTranspose Trans, double alpha,
-                                sp<Allocation> A, double beta, sp<Allocation> C) {
+                                const sp<Allocation>& A, double beta, const sp<Allocation>& C) {
     validateHERK(mRS, Element::F64_2(mRS), Trans, A, C);
     int k = 0;
     if (Trans == RsBlasConjTrans) {
@@ -1770,8 +1770,8 @@ void ScriptIntrinsicBLAS::ZHERK(RsBlasUplo Uplo, RsBlasTranspose Trans, double a
                            beta, 0, C->getID(), 0, 0, 0, 0);
 }
 
-static void validateHER2K(RS* mRS, sp<const Element> e, RsBlasTranspose Trans,
-                          sp<Allocation> A, sp<Allocation> B, sp<Allocation> C) {
+static void validateHER2K(RS* mRS, const sp<const Element>& e, RsBlasTranspose Trans,
+                          const sp<Allocation>& A, const sp<Allocation>& B, const sp<Allocation>& C) {
     if (!A->getType()->getElement()->isCompatible(e) ||
         !B->getType()->getElement()->isCompatible(e) ||
         !C->getType()->getElement()->isCompatible(e)) {
@@ -1799,7 +1799,7 @@ static void validateHER2K(RS* mRS, sp<const Element> e, RsBlasTranspose Trans,
 }
 
 void ScriptIntrinsicBLAS::CHER2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Float2 alpha,
-                                 sp<Allocation> A, sp<Allocation> B, float beta, sp<Allocation> C) {
+                                 const sp<Allocation>& A, const sp<Allocation>& B, float beta, const sp<Allocation>& C) {
     validateHER2K(mRS, Element::F32_2(mRS), Trans, A, B, C);
     int k = 0;
     if (Trans == RsBlasNoTrans) {
@@ -1814,7 +1814,7 @@ void ScriptIntrinsicBLAS::CHER2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Float2 
 }
 
 void ScriptIntrinsicBLAS::ZHER2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Double2 alpha,
-                                 sp<Allocation> A, sp<Allocation> B, double beta, sp<Allocation> C) {
+                                 const sp<Allocation>& A, const sp<Allocation>& B, double beta, const sp<Allocation>& C) {
     validateHER2K(mRS, Element::F64_2(mRS), Trans, A, B, C);
     int k = 0;
     if (Trans == RsBlasNoTrans) {
@@ -1830,8 +1830,8 @@ void ScriptIntrinsicBLAS::ZHER2K(RsBlasUplo Uplo, RsBlasTranspose Trans, Double2
 
 
 
-void ScriptIntrinsicBLAS::BNNM(sp<Allocation> A, int a_offset, sp<Allocation> B, int b_offset,
-                               sp<Allocation> C, int c_offset, int c_mult) {
+void ScriptIntrinsicBLAS::BNNM(const sp<Allocation>& A, int a_offset, const sp<Allocation>& B, int b_offset,
+                               const sp<Allocation>& C, int c_offset, int c_mult) {
     validateL3(mRS, Element::U8(mRS), RsBlasNoTrans, RsBlasTrans, 0, A, B, C);
 
     if (a_offset < 0 || a_offset > 255) {
