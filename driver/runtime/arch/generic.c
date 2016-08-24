@@ -635,13 +635,21 @@ extern uchar4 __attribute__((overloadable)) rsYuvToRGBA_uchar4(uchar y, uchar u,
     short V = ((short)v) - 128;
 
     short4 p;
-    p.r = (Y * 298 + V * 409 + 128) >> 8;
+/*    p.r = (Y * 298 + V * 409 + 128) >> 8;
     p.g = (Y * 298 - U * 100 - V * 208 + 128) >> 8;
     p.b = (Y * 298 + U * 516 + 128) >> 8;
     p.a = 255;
     p.r = rsClamp(p.r, (short)0, (short)255);
     p.g = rsClamp(p.g, (short)0, (short)255);
-    p.b = rsClamp(p.b, (short)0, (short)255);
+    p.b = rsClamp(p.b, (short)0, (short)255); */
+
+    p.x = (Y * 298 + V * 409 + 128) >> 8;
+    p.y = (Y * 298 - U * 100 - V * 208 + 128) >> 8;
+    p.z = (Y * 298 + U * 516 + 128) >> 8;
+    p.w = 255;
+    p.x = rsClamp(p.x, (short)0, (short)255);
+    p.y = rsClamp(p.y, (short)0, (short)255);
+    p.z = rsClamp(p.z, (short)0, (short)255);
 
     return convert_uchar4(p);
 }

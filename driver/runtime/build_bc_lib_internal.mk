@@ -25,7 +25,7 @@ include $(BUILD_SYSTEM)/base_rules.mk
 
 BCC_STRIP_ATTR := $(BUILD_OUT_EXECUTABLES)/bcc_strip_attr$(BUILD_EXECUTABLE_SUFFIX)
 
-bc_clang := $(RS_CLANG)
+bc_clang := $(CLANG)
 ifdef RS_DRIVER_CLANG_EXE
 bc_clang := $(RS_DRIVER_CLANG_EXE)
 endif
@@ -90,19 +90,19 @@ $(c_bc_files): $(intermediates)/%.bc: $(LOCAL_PATH)/%.c $(bc_clang)
 
 $(ll_bc_files): $(intermediates)/%.bc: $(LOCAL_PATH)/%.ll $(RS_LLVM_AS)
 	@mkdir -p $(dir $@)
-	$(hide) $(RELATIVE_PWD) $(RS_LLVM_AS) $< -o $@
+	$(hide) $(RELATIVE_PWD) $(LLVM_AS) $< -o $@
 
 $(foreach f,$(c_bc_files),$(call include-depfile,$(f:%.bc=%.P),$(f)))
 
 $(LOCAL_BUILT_MODULE): PRIVATE_BC_FILES := $(c_bc_files) $(ll_bc_files)
 $(LOCAL_BUILT_MODULE): $(c_bc_files) $(ll_bc_files)
-$(LOCAL_BUILT_MODULE): $(RS_LLVM_LINK)
-$(LOCAL_BUILT_MODULE): $(RS_LLVM_AS) $(BCC_STRIP_ATTR)
+$(LOCAL_BUILT_MODULE): $(LLVM_LINK)
+$(LOCAL_BUILT_MODULE): $(LLVM_AS) $(BCC_STRIP_ATTR)
 	@echo "bc lib: $(PRIVATE_MODULE) ($@)"
 	@mkdir -p $(dir $@)
 	# Strip useless known warning about combining mismatched modules, as well as
 	# any blank lines that llvm-link inserts.
-	$(hide) $(RELATIVE_PWD) $(RS_LLVM_LINK) $(PRIVATE_BC_FILES) -o $@.unstripped 2> >(grep -v "\(modules of different\)\|^$$" >&2)
+	$(hide) $(RELATIVE_PWD) $(LLVM_LINK) $(PRIVATE_BC_FILES) -o $@.unstripped 2> >(grep -v "\(modules of different\)\|^$$" >&2)
 	$(hide) $(RELATIVE_PWD) $(BCC_STRIP_ATTR) -o $@ $@.unstripped
 
 BCC_RS_TRIPLE :=
