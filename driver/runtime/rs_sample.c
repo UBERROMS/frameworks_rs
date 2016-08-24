@@ -259,7 +259,9 @@ static float4 __attribute__((overloadable))
     float3 r = p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3;
     r *= (1.f / 255.f);
     float4 ret;
-    ret.rgb = r;
+    ret.x = r.x;
+    ret.y = r.y;
+    ret.z = r.z;
     ret.w = 1.f;
     return ret;
 }
