@@ -457,15 +457,15 @@ error:
 
 const char* RsdCpuScriptImpl::findCoreLib(const bcinfo::MetadataExtractor& ME, const char* bitcode,
                                           size_t bitcodeSize) {
-    const char* defaultLib = SYSLIBPATH"/libclcore.bc";
+    const char* defaultLib = SYSLIBPATH_BC"/libclcore.bc";
 
     // If we're debugging, use the debug library.
     if (mCtx->getContext()->getContextType() == RS_CONTEXT_TYPE_DEBUG) {
-        return SYSLIBPATH"/libclcore_debug.bc";
+        return SYSLIBPATH_BC"/libclcore_debug.bc";
     }
 
     if (ME.hasDebugInfo()) {
-        return SYSLIBPATH"/libclcore_g.bc";
+        return SYSLIBPATH_BC"/libclcore_g.bc";
     }
 
     // If a callback has been registered to specify a library, use that.
@@ -482,13 +482,13 @@ const char* RsdCpuScriptImpl::findCoreLib(const bcinfo::MetadataExtractor& ME, c
         // for all reduced precision scripts.
         // ARMv8 does not use NEON, as ASIMD can be used with all precision
         // levels.
-        return SYSLIBPATH"/libclcore_neon.bc";
+        return SYSLIBPATH_BC"/libclcore_neon.bc";
     } else {
         return defaultLib;
     }
 #elif defined(__i386__) || defined(__x86_64__)
     // x86 devices will use an optimized library.
-    return SYSLIBPATH"/libclcore_x86.bc";
+    return SYSLIBPATH_BC"/libclcore_x86.bc";
 #else
     return defaultLib;
 #endif

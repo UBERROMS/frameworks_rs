@@ -230,7 +230,7 @@ string getCoreLibPath(Context* context, string* coreLibRelaxedPath) {
 
     // If we're debugging, use the debug library.
     if (context->getContextType() == RS_CONTEXT_TYPE_DEBUG) {
-        return SYSLIBPATH"/libclcore_debug.bc";
+        return SYSLIBPATH_BC"/libclcore_debug.bc";
     }
 
     // Check for a platform specific library
@@ -240,14 +240,14 @@ string getCoreLibPath(Context* context, string* coreLibRelaxedPath) {
     // for all reduced precision scripts.
     // ARMv8 does not use NEON, as ASIMD can be used with all precision
     // levels.
-    *coreLibRelaxedPath = SYSLIBPATH"/libclcore_neon.bc";
+    *coreLibRelaxedPath = SYSLIBPATH_BC"/libclcore_neon.bc";
 #endif
 
 #if defined(__i386__) || defined(__x86_64__)
     // x86 devices will use an optimized library.
-    return SYSLIBPATH"/libclcore_x86.bc";
+    return SYSLIBPATH_BC"/libclcore_x86.bc";
 #else
-    return SYSLIBPATH"/libclcore.bc";
+    return SYSLIBPATH_BC"/libclcore.bc";
 #endif
 }
 

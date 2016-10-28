@@ -10,6 +10,10 @@ ifneq ($(OVERRIDE_RS_DRIVER),)
   rs_base_CFLAGS += -DOVERRIDE_RS_DRIVER=$(OVERRIDE_RS_DRIVER)
 endif
 
+ifeq ($(BUILD_ARM_FOR_X86),true)
+  rs_base_CFLAGS += -DBUILD_ARM_FOR_X86
+endif
+
 include $(CLEAR_VARS)
 ifneq ($(HOST_OS),windows)
 LOCAL_CLANG := true
