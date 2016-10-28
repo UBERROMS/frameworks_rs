@@ -71,8 +71,11 @@ ifeq ($(ARCH_ARM_HAVE_VFP),true)
 endif
 
 ifeq ($(ARCH_X86_HAVE_SSSE3),true)
-    LOCAL_CFLAGS += -DARCH_X86_HAVE_SSSE3
-    LOCAL_SRC_FILES+= \
+    LOCAL_CFLAGS_x86 += -DARCH_X86_HAVE_SSSE3
+    LOCAL_SRC_FILES_x86 += \
+    rsCpuIntrinsics_x86.cpp
+    LOCAL_CFLAGS_x86_64 += -DARCH_X86_HAVE_SSSE3
+    LOCAL_SRC_FILES_x86_64 += \
     rsCpuIntrinsics_x86.cpp
 endif
 
