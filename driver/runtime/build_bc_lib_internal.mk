@@ -54,8 +54,8 @@ bc_cflags := -MD \
              $($(LOCAL_2ND_ARCH_VAR_PREFIX)RS_TRIPLE_CFLAGS) \
              $(bc_warning_flags) \
              $(LOCAL_CFLAGS) \
-             $(bc_translated_clang_cc1_cflags) \
-             $(LOCAL_CFLAGS_$(my_32_64_bit_suffix))
+             $(LOCAL_CFLAGS_$(my_32_64_bit_suffix)) \
+             -x renderscript
 
 ifeq ($(rs_debug_runtime),1)
     bc_cflags += -DRS_DEBUG_RUNTIME
@@ -88,7 +88,7 @@ $(c_bc_files): $(intermediates)/%.bc: $(LOCAL_PATH)/%.c $(bc_clang)
 	$(hide) $(RELATIVE_PWD) $(bc_clang) $(addprefix -I, $(PRIVATE_INCLUDES)) $(PRIVATE_CFLAGS) $< -o $@
 	$(call transform-d-to-p-args,$(@:%.bc=%.d),$(@:%.bc=%.P))
 
-$(ll_bc_files): $(intermediates)/%.bc: $(LOCAL_PATH)/%.ll $(RS_LLVM_AS)
+$(ll_bc_files): $(intermediates)/%.bc: $(LOCAL_PATH)/%.ll $(LLVM_AS)
 	@mkdir -p $(dir $@)
 	$(hide) $(RELATIVE_PWD) $(LLVM_AS) $< -o $@
 

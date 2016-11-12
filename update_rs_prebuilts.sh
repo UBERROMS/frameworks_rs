@@ -37,11 +37,6 @@ export FORCE_BUILD_LLVM_COMPONENTS=true
 # Skip building LLVM and compiler-rt tests while updating prebuilts
 export SKIP_LLVM_TESTS=true
 
-# Ensure that we have constructed the latest "bcc" for the host. Without
-# this variable, we don't build the .so files, hence we never construct the
-# actual required compiler pieces.
-export FORCE_BUILD_RS_COMPAT=true
-
 # RENDERSCRIPT_V8_JAR is the generated JAVA static lib for RenderScript Support Lib.
 RENDERSCRIPT_V8_JAR=out/target/common/obj/JAVA_LIBRARIES/android-support-v8-renderscript_intermediates/classes.jar
 
@@ -70,8 +65,8 @@ build_rs_libs() {
   lunch $1
   # Build the RS runtime libraries.
   cd $MY_ANDROID_DIR/frameworks/rs/driver/runtime && mma -j$NUM_CORES && cd - || exit 1
-  # Build a sample support application to ensure that all the pieces are up to date.
-  cd $MY_ANDROID_DIR/frameworks/rs/java/tests/RSTest_CompatLib/ && mma -j$NUM_CORES && cd - || exit 2
+  # Build libRSSupport.so
+  cd $MY_ANDROID_DIR/frameworks/support/v8/renderscript && mma -j$NUM_CORES && cd - || exit 2
   # Build android-support-v8-renderscript.jar
   # We need to explicitly do so, since JACK won't generate a jar by default.
   cd $MY_ANDROID_DIR && make $RENDERSCRIPT_V8_JAR -j$NUM_CORES && cd - || exit 3
@@ -79,6 +74,21 @@ build_rs_libs() {
   cd $MY_ANDROID_DIR/external/compiler-rt && mma -j$NUM_CORES && cd - || exit 4
   # Build the blas libraries.
   cd $MY_ANDROID_DIR/external/cblas && mma -j$NUM_CORES && cd - || exit 5
+}
+
+build_rstest_compatlib() {
+  echo Building for target $1
+  lunch $1
+  # Build a sample support application to ensure that all the pieces are up to date.
+  cd $MY_ANDROID_DIR/frameworks/rs/java/tests/RSTest_CompatLib/ && mma -j$NUM_CORES FORCE_BUILD_RS_COMPAT=true && cd - || exit 6
+}
+
+build_rs_host_tools() {
+  echo "Building RS host tools (llvm-rs-cc and bcc_compat)"
+  lunch aosp_arm64-userdebug
+
+  cd $MY_ANDROID_DIR/frameworks/compile/slang && mma -j$NUM_CORES && cd - || exit 7
+  cd $MY_ANDROID_DIR/frameworks/compile/libbcc && mma -j$NUM_CORES && cd - || exit 8
 }
 
 # Build everything by default
@@ -114,6 +124,8 @@ if [ $build_rs -eq 1 ]; then
   echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   source build/envsetup.sh
+
+  build_rs_host_tools
 
   for t in ${TARGETS[@]}; do
     build_rs_libs aosp_${t}-userdebug
@@ -205,6 +217,26 @@ for a in $TOOLS_LIB32; do
   cp $HOST_LIB_DIR/$a tools/$SHORT_OSNAME/lib
   strip tools/$SHORT_OSNAME/lib/$a
 done
+
+if [ $build_rs -eq 1 ]; then
+
+  echo BUILDING RSTest_CompatLib with the new prebuilts
+
+  echo "Using $NUM_CORES cores"
+
+  source $MY_ANDROID_DIR/build/envsetup.sh
+
+  for t in ${TARGETS[@]}; do
+    build_rstest_compatlib aosp_${t}-userdebug
+  done
+
+  echo DONE BUILDING RSTest_CompatLib
+
+else
+
+  echo SKIPPING BUILD OF RSTest_CompatLib
+
+fi
 
 if [ $DARWIN -eq 0 ]; then
   echo "DON'T FORGET TO UPDATE THE DARWIN COMPILER PREBUILTS!!!"
