@@ -17,9 +17,8 @@
 #include "rsContext.h"
 #include "rsProgramStore.h"
 
-using namespace android;
-using namespace android::renderscript;
-
+namespace android {
+namespace renderscript {
 
 ProgramStore::ProgramStore(Context *rsc,
                            bool colorMaskR, bool colorMaskG, bool colorMaskB, bool colorMaskA,
@@ -140,9 +139,6 @@ void ProgramStoreState::deinit(Context *rsc) {
 }
 
 
-namespace android {
-namespace renderscript {
-
 RsProgramStore rsi_ProgramStoreCreate(Context *rsc,
                                       bool colorMaskR, bool colorMaskG, bool colorMaskB, bool colorMaskA,
                                       bool depthMask, bool ditherEnable,
@@ -159,5 +155,5 @@ RsProgramStore rsi_ProgramStoreCreate(Context *rsc,
     return ps.get();
 }
 
-}
-}
+} // namespace renderscript
+} // namespace android

@@ -36,9 +36,6 @@
 
 #include <time.h>
 
-using namespace android;
-using namespace android::renderscript;
-
 namespace android {
 namespace renderscript {
 

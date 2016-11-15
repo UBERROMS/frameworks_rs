@@ -28,8 +28,8 @@
 
 #include <inttypes.h>
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 FileA3D::FileA3D(Context *rsc) : ObjectBase(rsc) {
     mAlloc = nullptr;
@@ -392,3 +392,5 @@ void FileA3D::appendToFile(Context *con, ObjectBase *obj) {
     mWriteStream->align(4);
 }
 
+} // namespace renderscript
+} // namespace android

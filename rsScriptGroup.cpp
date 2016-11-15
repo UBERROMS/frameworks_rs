@@ -23,8 +23,8 @@
 #include <algorithm>
 #include <time.h>
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 ScriptGroup::ScriptGroup(Context *rsc) : ScriptGroupBase(rsc) {
 }
@@ -382,9 +382,6 @@ ScriptGroup::Link::Link() {
 ScriptGroup::Link::~Link() {
 }
 
-namespace android {
-namespace renderscript {
-
 
 RsScriptGroup rsi_ScriptGroupCreate(Context *rsc,
                            RsScriptKernelID * kernels, size_t kernelsSize,
@@ -422,5 +419,5 @@ void rsi_ScriptGroupExecute(Context *rsc, RsScriptGroup sg) {
     s->execute(rsc);
 }
 
-}
-}
+} // namespace renderscript
+} // namespace android

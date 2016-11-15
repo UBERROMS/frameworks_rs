@@ -17,9 +17,8 @@
 
 #include "rsContext.h"
 
-using namespace android;
-using namespace android::renderscript;
-
+namespace android {
+namespace renderscript {
 
 Element::Element(Context *rsc) : ObjectBase(rsc) {
     mBits = 0;
@@ -409,9 +408,6 @@ ElementState::~ElementState() {
 /////////////////////////////////////////
 //
 
-namespace android {
-namespace renderscript {
-
 RsElement rsi_ElementCreate(Context *rsc,
                             RsDataType dt,
                             RsDataKind dk,
@@ -435,5 +431,5 @@ RsElement rsi_ElementCreate2(Context *rsc,
                                       names, nameLengths, arraySizes);
 }
 
-}
-}
+} // namespace renderscript
+} // namespace android

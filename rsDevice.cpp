@@ -17,8 +17,8 @@
 #include "rsDevice.h"
 #include "rsContext.h"
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 Device::Device() {
     mForceSW = false;
@@ -39,3 +39,6 @@ void Device::removeContext(Context *rsc) {
         }
     }
 }
+
+} // namespace renderscript
+} // namespace android

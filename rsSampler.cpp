@@ -18,9 +18,8 @@
 #include "rsSampler.h"
 #include "rs.h"
 
-using namespace android;
-using namespace android::renderscript;
-
+namespace android {
+namespace renderscript {
 
 Sampler::Sampler(Context *rsc) : ObjectBase(rsc) {
     // Should not get called.
@@ -129,9 +128,6 @@ void Sampler::operator delete(void* ptr) {
 
 ////////////////////////////////
 
-namespace android {
-namespace renderscript {
-
 RsSampler rsi_SamplerCreate(Context * rsc,
                             RsSamplerValue magFilter,
                             RsSamplerValue minFilter,
@@ -145,4 +141,5 @@ RsSampler rsi_SamplerCreate(Context * rsc,
     return s.get();
 }
 
-}}
+} // namespace renderscript
+} // namespace android

@@ -17,8 +17,11 @@
 #include "rsContext.h"
 #include "rsFileA3D.h"
 
-using namespace android;
-using namespace android::renderscript;
+using android::Asset;
+using android::renderscript::Context;
+using android::renderscript::FileA3D;
+using android::renderscript::ObjectBase;
+using android::renderscript::rsuCopyString;
 
 RsObjectBase rsaFileA3DGetEntryByIndex(RsContext con, uint32_t index, RsFile file) {
     FileA3D *fa3d = static_cast<FileA3D *>(file);

@@ -24,8 +24,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 FifoSocket::FifoSocket() {
     mShutdown = false;
@@ -105,4 +105,5 @@ void FifoSocket::readReturn(const void *data, size_t bytes) {
     //rsAssert(ret == bytes);
 }
 
-
+} // namespace renderscript
+} // namespace android

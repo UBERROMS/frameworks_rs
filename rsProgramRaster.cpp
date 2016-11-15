@@ -17,9 +17,8 @@
 #include "rsContext.h"
 #include "rsProgramRaster.h"
 
-using namespace android;
-using namespace android::renderscript;
-
+namespace android {
+namespace renderscript {
 
 ProgramRaster::ProgramRaster(Context *rsc, bool pointSprite, RsCullMode cull)
     : ProgramBase(rsc) {
@@ -100,15 +99,11 @@ ObjectBaseRef<ProgramRaster> ProgramRaster::getProgramRaster(Context *rsc,
     return returnRef;
 }
 
-namespace android {
-namespace renderscript {
-
 RsProgramRaster rsi_ProgramRasterCreate(Context * rsc, bool pointSprite, RsCullMode cull) {
     ObjectBaseRef<ProgramRaster> pr = ProgramRaster::getProgramRaster(rsc, pointSprite, cull);
     pr->incUserRef();
     return pr.get();
 }
 
-}
-}
-
+} // namespace renderscript
+} // namespace android

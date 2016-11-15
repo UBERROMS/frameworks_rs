@@ -24,8 +24,8 @@
 #include "rsCompatibilityLib.h"
 #endif
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 Type::Type(Context *rsc) : ObjectBase(rsc) {
     memset(&mHal, 0, sizeof(mHal));
@@ -358,8 +358,6 @@ void Type::callUpdateCacheObject(const Context *rsc, void *dstObj) const {
 
 //////////////////////////////////////////////////
 //
-namespace android {
-namespace renderscript {
 
 RsType rsi_TypeCreate(Context *rsc, RsElement _e, uint32_t dimX,
                      uint32_t dimY, uint32_t dimZ, bool mipmaps, bool faces, uint32_t yuv) {
@@ -381,5 +379,5 @@ RsType rsi_TypeCreate2(Context *rsc, const RsTypeCreateParams *p, size_t len) {
     return Type::getType(rsc, e, p, len);
 }
 
-}
-}
+} // namespace renderscript
+} // namespace android

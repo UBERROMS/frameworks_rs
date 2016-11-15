@@ -21,8 +21,9 @@
 #include "rsgApiFuncDecl.h"
 #include "rsFifo.h"
 
-using namespace android;
-using namespace android::renderscript;
+using android::renderscript::Context;
+using android::renderscript::Device;
+using android::renderscript::ObjectBase;
 
 /*
  * This global will be found by the debugger and will have its value flipped.

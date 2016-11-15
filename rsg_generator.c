@@ -203,8 +203,8 @@ void printApiCpp(FILE *f) {
     fprintf(f, "#include \"rsgApiFuncDecl.h\"\n");
     fprintf(f, "#include \"rsFifo.h\"\n");
     fprintf(f, "\n");
-    fprintf(f, "using namespace android;\n");
-    fprintf(f, "using namespace android::renderscript;\n");
+    fprintf(f, "using namespace android;  // NOLINT\n");
+    fprintf(f, "using namespace android::renderscript;  // NOLINT\n");
     fprintf(f, "\n");
 
     // Generate RS funcs that send messages on the local FIFO.

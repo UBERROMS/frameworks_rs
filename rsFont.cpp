@@ -30,8 +30,8 @@
 #include FT_BITMAP_H
 #endif //ANDROID_RS_SERIALIZE
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 Font::Font(Context *rsc) : ObjectBase(rsc), mCachedGlyphs(NULL) {
     mInitialized = false;
@@ -853,9 +853,6 @@ bool FontState::CacheTextureLine::fitBitmap(FT_Bitmap_ *bitmap, uint32_t *retOri
     return false;
 }
 #endif //ANDROID_RS_SERIALIZE
-
-namespace android {
-namespace renderscript {
 
 RsFont rsi_FontCreateFromFile(Context *rsc,
                               char const *name, size_t name_length,

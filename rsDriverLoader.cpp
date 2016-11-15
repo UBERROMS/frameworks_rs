@@ -45,10 +45,8 @@
 #include "rsCompatibilityLib.h"
 #endif
 
-using namespace android;
-using namespace android::renderscript;
-
-
+namespace android {
+namespace renderscript {
 
 typedef bool (*HalQueryVersion)(uint32_t *version_major, uint32_t *version_minor);
 typedef bool (*HalQueryHal)(android::renderscript::RsHalInitEnums entry, void **fnPtr);
@@ -272,3 +270,6 @@ bool Context::loadDriver(bool forceDefault) {
 
     return true;
 }
+
+} // namespace renderscript
+} // namespace android

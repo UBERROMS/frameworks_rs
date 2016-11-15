@@ -26,8 +26,8 @@
 #include <poll.h>
 
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 ThreadIO::ThreadIO() {
     mRunning = true;
@@ -215,3 +215,5 @@ bool ThreadIO::sendToClient(RsMessageToClientType cmdID, uint32_t usrID, const v
     return true;
 }
 
+} // namespace renderscript
+} // namespace android

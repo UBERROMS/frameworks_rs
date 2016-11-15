@@ -24,8 +24,8 @@
 #include "rsCompatibilityLib.h"
 #endif
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 extern "C" void rsaTypeGetNativeData(RsContext con, RsType type, uintptr_t *typeData, uint32_t typeDataSize) {
     rsAssert(typeDataSize == 6);
@@ -41,3 +41,6 @@ extern "C" void rsaTypeGetNativeData(RsContext con, RsType type, uintptr_t *type
     (*typeData++) = (uintptr_t)t->getElement();
     t->getElement()->incUserRef();
 }
+
+} // namespace renderscript
+} // namespace android

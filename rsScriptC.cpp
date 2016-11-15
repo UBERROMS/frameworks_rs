@@ -45,8 +45,7 @@
 
 #endif
 
-using namespace android;
-using namespace android::renderscript;
+using android::renderscript::ScriptC;
 
 #define GET_TLS()  Context::ScriptTLSStruct * tls = \
     (Context::ScriptTLSStruct *)pthread_getspecific(Context::gThreadTLSKey); \
