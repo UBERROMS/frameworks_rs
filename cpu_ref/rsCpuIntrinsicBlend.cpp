@@ -18,9 +18,6 @@
 #include "rsCpuIntrinsic.h"
 #include "rsCpuIntrinsicInlines.h"
 
-using namespace android;
-using namespace android::renderscript;
-
 namespace android {
 namespace renderscript {
 
@@ -108,6 +105,9 @@ extern void rsdIntrinsicBlendMultiply_K(void *dst, const void *src, uint32_t cou
 extern void rsdIntrinsicBlendAdd_K(void *dst, const void *src, uint32_t count8);
 extern void rsdIntrinsicBlendSub_K(void *dst, const void *src, uint32_t count8);
 #endif
+
+namespace android {
+namespace renderscript {
 
 void RsdCpuScriptIntrinsicBlend::kernel(const RsExpandKernelDriverInfo *info,
                                         uint32_t xstart, uint32_t xend,
@@ -511,3 +511,6 @@ RsdCpuScriptImpl * rsdIntrinsic_Blend(RsdCpuReferenceImpl *ctx,
                                       const Script *s, const Element *e) {
     return new RsdCpuScriptIntrinsicBlend(ctx, s, e);
 }
+
+} // namespace renderscript
+} // namespace android

@@ -27,8 +27,9 @@
 #include "rsCpuCore.h"
 #include "rsCpuScript.h"
 
-using namespace android;
-using namespace android::renderscript;
+using android::renderscript::Matrix2x2;
+using android::renderscript::Matrix3x3;
+using android::renderscript::Matrix4x4;
 
 #define EXPORT_F32_FN_F32(func)                                 \
     float __attribute__((overloadable)) SC_##func(float v) {    \

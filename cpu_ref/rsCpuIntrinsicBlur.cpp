@@ -17,12 +17,8 @@
 #include "rsCpuIntrinsic.h"
 #include "rsCpuIntrinsicInlines.h"
 
-using namespace android;
-using namespace android::renderscript;
-
 namespace android {
 namespace renderscript {
-
 
 class RsdCpuScriptIntrinsicBlur : public RsdCpuScriptIntrinsic {
 public:
@@ -52,9 +48,6 @@ protected:
                          uint32_t outstep);
     void ComputeGaussianWeights();
 };
-
-}
-}
 
 
 void RsdCpuScriptIntrinsicBlur::ComputeGaussianWeights() {
@@ -148,6 +141,9 @@ static void OneVU1(const RsExpandKernelDriverInfo *info, float *out, int32_t x, 
     out[0] = blurredPixel;
 }
 
+} // namespace renderscript
+} // namespace android
+
 
 extern "C" void rsdIntrinsicBlurU1_K(uchar *out, uchar const *in, size_t w, size_t h,
                  size_t p, size_t x, size_t y, size_t count, size_t r, uint16_t const *tab);
@@ -159,6 +155,8 @@ extern void rsdIntrinsicBlurVFU4_K(void *dst, const void *pin, int stride, const
 extern void rsdIntrinsicBlurHFU4_K(void *dst, const void *pin, const void *gptr, int rct, int x1, int ct);
 extern void rsdIntrinsicBlurHFU1_K(void *dst, const void *pin, const void *gptr, int rct, int x1, int ct);
 #endif
+
+using android::renderscript::gArchUseSIMD;
 
 static void OneVFU4(float4 *out,
                     const uchar *ptrIn, int iStride, const float* gPtr, int ct,
@@ -247,6 +245,9 @@ static void OneVFU1(float *out,
     }
 }
 
+using android::renderscript::rsMin;
+using android::renderscript::rsMax;
+
 static void OneHU4(const RsExpandKernelDriverInfo *info, uchar4 *out, int32_t x,
                    const float4 *ptrIn, const float* gPtr, int iradius) {
 
@@ -277,6 +278,9 @@ static void OneHU1(const RsExpandKernelDriverInfo *info, uchar *out, int32_t x,
     out[0] = (uchar)blurredPixel;
 }
 
+
+namespace android {
+namespace renderscript {
 
 void RsdCpuScriptIntrinsicBlur::kernelU4(const RsExpandKernelDriverInfo *info,
                                          uint32_t xstart, uint32_t xend,
@@ -471,8 +475,10 @@ void RsdCpuScriptIntrinsicBlur::invokeFreeChildren() {
     mAlloc.clear();
 }
 
-
 RsdCpuScriptImpl * rsdIntrinsic_Blur(RsdCpuReferenceImpl *ctx, const Script *s, const Element *e) {
 
     return new RsdCpuScriptIntrinsicBlur(ctx, s, e);
 }
+
+} // namespace renderscript
+} // namespace android

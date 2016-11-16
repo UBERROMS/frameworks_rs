@@ -19,8 +19,8 @@
 #include "rsScriptGroup.h"
 #include "rsCpuScriptGroup.h"
 
-using namespace android;
-using namespace android::renderscript;
+namespace android {
+namespace renderscript {
 
 CpuScriptGroupImpl::CpuScriptGroupImpl(RsdCpuReferenceImpl *ctx, const ScriptGroupBase *sg) {
     mCtx = ctx;
@@ -294,3 +294,6 @@ void CpuScriptGroupImpl::execute() {
         }
     }
 }
+
+} // namespace renderscript
+} // namespace android

@@ -42,16 +42,16 @@ static pid_t gettid() {
 }
 #endif
 
-using namespace android;
-using namespace android::renderscript;
-
 #define REDUCE_ALOGV(mtls, level, ...) do { if ((mtls)->logReduce >= (level)) ALOGV(__VA_ARGS__); } while(0)
 
 static pthread_key_t gThreadTLSKey = 0;
 static uint32_t gThreadTLSKeyCount = 0;
 static pthread_mutex_t gInitMutex = PTHREAD_MUTEX_INITIALIZER;
 
-bool android::renderscript::gArchUseSIMD = false;
+namespace android {
+namespace renderscript {
+
+bool gArchUseSIMD = false;
 
 RsdCpuReference::~RsdCpuReference() {
 }
@@ -1038,3 +1038,6 @@ void* RsdCpuReferenceImpl::createScriptGroup(const ScriptGroupBase *sg) {
   }
   return nullptr;
 }
+
+} // namespace renderscript
+} // namespace android
