@@ -31,9 +31,14 @@
 #include "utils/StopWatch.h"
 #endif
 
-using namespace android;
-using namespace android::renderscript;
-
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::Element;
+using android::renderscript::ObjectBase;
+using android::renderscript::RsdCpuReference;
+using android::renderscript::Script;
+using android::renderscript::ScriptC;
+using android::renderscript::rs_script;
 
 bool rsdScriptInit(const Context *rsc,
                      ScriptC *script,

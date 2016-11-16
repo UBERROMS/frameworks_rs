@@ -24,9 +24,13 @@
 #include "rsdBcc.h"
 #include "rsdAllocation.h"
 
-using namespace android;
-using namespace android::renderscript;
-
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::RsdCpuReference;
+using android::renderscript::ScriptGroup;
+using android::renderscript::ScriptGroupBase;
+using android::renderscript::ScriptKernelID;
+using android::renderscript::rs_script_group;
 
 bool rsdScriptGroupInit(const Context *rsc, ScriptGroupBase *sg) {
     RsdHal *dc = (RsdHal *)rsc->mHal.drv;

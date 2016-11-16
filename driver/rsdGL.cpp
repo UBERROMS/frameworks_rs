@@ -43,8 +43,7 @@
 
 #include <gui/Surface.h>
 
-using namespace android;
-using namespace android::renderscript;
+using android::renderscript::Context;
 
 static int32_t gGLContextCount = 0;
 

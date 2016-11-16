@@ -44,8 +44,11 @@
 #include <sys/syscall.h>
 #include <string.h>
 
-using namespace android;
-using namespace android::renderscript;
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::RsHalInitEnums;
+using android::renderscript::RsdCpuReference;
+using android::renderscript::Script;
 
 static void Shutdown(Context *rsc);
 static void SetPriority(const Context *rsc, int32_t priority);
@@ -55,6 +58,9 @@ static void SetPriority(const Context *rsc, int32_t priority);
 #else
     #define NATIVE_FUNC(a) nullptr
 #endif
+
+namespace android {
+namespace renderscript {
 
 extern "C" bool rsdHalQueryHal(RsHalInitEnums entry, void **fnPtr) {
     switch(entry) {
@@ -268,7 +274,8 @@ extern "C" bool rsdHalQueryVersion(uint32_t *major, uint32_t *minor) {
     return true;
 }
 
-
+} // namespace renderscript
+} // namespace android
 
 extern const RsdCpuReference::CpuSymbol * rsdLookupRuntimeStub(Context * pContext, char const* name);
 

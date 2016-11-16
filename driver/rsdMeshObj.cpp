@@ -26,8 +26,11 @@
 #include "rsdMeshObj.h"
 #include "rsdGL.h"
 
-using namespace android;
-using namespace android::renderscript;
+using android::String8;
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::Element;
+using android::renderscript::Mesh;
 
 RsdMeshObj::RsdMeshObj(const Context *rsc, const Mesh *rsMesh) {
     mRSMesh = rsMesh;

@@ -29,9 +29,9 @@
 #include <GLES/glext.h>
 #endif
 
-using namespace android;
-using namespace android::renderscript;
-
+using android::renderscript::Context;
+using android::renderscript::Type;
+using android::renderscript::rs_type;
 
 bool rsdTypeInit(const Context *, const Type *t) {
     return true;

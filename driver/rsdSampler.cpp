@@ -29,9 +29,9 @@
 #include <GLES/glext.h>
 #endif
 
-using namespace android;
-using namespace android::renderscript;
-
+using android::renderscript::Context;
+using android::renderscript::Sampler;
+using android::renderscript::rs_sampler;
 
 bool rsdSamplerInit(const Context *, const Sampler *s) {
     return true;

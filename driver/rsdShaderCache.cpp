@@ -24,9 +24,8 @@
 #include <GLES/gl.h>
 #include <GLES2/gl2.h>
 
-using namespace android;
-using namespace android::renderscript;
-
+using android::String8;
+using android::renderscript::Context;
 
 RsdShaderCache::RsdShaderCache() {
     mEntries.setCapacity(16);
@@ -289,4 +288,3 @@ void RsdShaderCache::cleanupAll() {
     }
     mEntries.clear();
 }
-

@@ -44,8 +44,21 @@
 #include <malloc.h>
 #endif
 
-using namespace android;
-using namespace android::renderscript;
+#ifndef RS_COMPATIBILITY_LIB
+using android::GraphicBufferMapper;
+using android::PIXEL_FORMAT_RGBA_8888;
+using android::Rect;
+#endif
+
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::Element;
+using android::renderscript::Type;
+using android::renderscript::rs_allocation;
+using android::renderscript::rsBoxFilter565;
+using android::renderscript::rsBoxFilter8888;
+using android::renderscript::rsMax;
+using android::renderscript::rsRound;
 
 #ifndef RS_COMPATIBILITY_LIB
 const static GLenum gFaceOrder[] = {

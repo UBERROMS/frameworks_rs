@@ -18,9 +18,9 @@
 #include "rsdCore.h"
 #include "rsElement.h"
 
-using namespace android;
-using namespace android::renderscript;
-
+using android::renderscript::Context;
+using android::renderscript::Element;
+using android::renderscript::rs_element;
 
 bool rsdElementInit(const Context *, const Element *e) {
     return true;

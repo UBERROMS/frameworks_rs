@@ -25,8 +25,7 @@
 #include "rsdVertexArray.h"
 #include "rsdShaderCache.h"
 
-using namespace android;
-using namespace android::renderscript;
+using android::renderscript::Context;
 
 RsdVertexArray::RsdVertexArray(const Attrib *attribs, uint32_t numAttribs) {
     mAttribs = attribs;
@@ -135,4 +134,3 @@ void RsdVertexArrayState::init(uint32_t maxAttrs) {
         mAttrsEnabled[ct] = false;
     }
 }
-

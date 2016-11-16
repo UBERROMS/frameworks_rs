@@ -26,8 +26,13 @@
 #include "rsdShader.h"
 #include "rsdShaderCache.h"
 
-using namespace android;
-using namespace android::renderscript;
+using android::String8;
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::Element;
+using android::renderscript::Program;
+using android::renderscript::Sampler;
+using android::renderscript::rsMin;
 
 RsdShader::RsdShader(const Program *p, uint32_t type,
                      const char * shaderText, size_t shaderLength,

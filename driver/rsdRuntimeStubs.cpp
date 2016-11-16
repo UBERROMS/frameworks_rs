@@ -32,8 +32,25 @@
 
 #include <time.h>
 
-using namespace android;
-using namespace android::renderscript;
+#ifndef RS_COMPATIBILITY_LIB
+using android::renderscript::Font;
+#endif
+
+using android::renderscript::Allocation;
+using android::renderscript::Context;
+using android::renderscript::Element;
+using android::renderscript::RsdCpuReference;
+using android::renderscript::Mesh;
+using android::renderscript::ObjectBase;
+using android::renderscript::ObjectBaseRef;
+using android::renderscript::ProgramFragment;
+using android::renderscript::ProgramRaster;
+using android::renderscript::ProgramStore;
+using android::renderscript::ProgramVertex;
+using android::renderscript::Sampler;
+using android::renderscript::Script;
+using android::renderscript::Type;
+using android::renderscript::rs_object_base;
 
 typedef __fp16 half;
 typedef half half2 __attribute__((ext_vector_type(2)));
