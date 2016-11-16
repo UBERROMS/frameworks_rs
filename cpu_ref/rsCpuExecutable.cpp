@@ -713,6 +713,8 @@ error:
     delete[] pragmaKeys;
 #endif  // RS_COMPATIBILITY_LIB
 
+    delete[] reduceDescriptions;
+
     delete[] forEachSignatures;
     delete[] forEachFunctions;
 
