@@ -697,9 +697,16 @@ error:
 
 #ifndef RS_COMPATIBILITY_LIB
 
-    for (size_t idx = 0; idx < pragmaCount; ++idx) {
-        delete [] pragmaKeys[idx];
-        delete [] pragmaValues[idx];
+    if (pragmaKeys) {
+        for (size_t idx = 0; idx < pragmaCount; ++idx) {
+            delete [] pragmaKeys[idx];
+        }
+    }
+
+    if (pragmaValues) {
+        for (size_t idx = 0; idx < pragmaCount; ++idx) {
+            delete [] pragmaValues[idx];
+        }
     }
 
     delete[] pragmaValues;
