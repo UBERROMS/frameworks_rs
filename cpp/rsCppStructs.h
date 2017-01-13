@@ -3278,10 +3278,10 @@ class ScriptIntrinsicBLAS : public ScriptIntrinsic {
      * @param TransA The type of transpose applied to matrix A.
      * @param TransB The type of transpose applied to matrix B.
      * @param alpha The scalar alpha.
-     * @param A The input allocation contains matrix A, supported elements type: {Element#F64_2
-     * @param B The input allocation contains matrix B, supported elements type: {Element#F64_2
+     * @param A The input allocation contains matrix A, supported elements type: {Element#F64_2}.
+     * @param B The input allocation contains matrix B, supported elements type: {Element#F64_2}.
      * @param beta The scalar beta.
-     * @param C The input allocation contains matrix C, supported elements type: {Element#F64_2
+     * @param C The input allocation contains matrix C, supported elements type: {Element#F64_2}.
      */
     void ZGEMM(RsBlasTranspose TransA, RsBlasTranspose TransB, Double2 alpha, sp<Allocation> A,
                       sp<Allocation> B, Double2 beta, sp<Allocation> C);
