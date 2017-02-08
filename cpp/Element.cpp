@@ -187,7 +187,7 @@ Element::Element(void *id, android::RSC::sp<RS> rs,
     mVisibleElementMap = nullptr;
     mVisibleElementMapSize = 0;
 
-    mElements = (android::RSC::sp<const Element> *)calloc(mElementsCount, sizeof(android::RSC::sp<Element>));
+    mElements = (android::RSC::sp<const Element> *)calloc(mElementsCount, sizeof(android::RSC::sp<const Element>));
     mElementNames = (char **)calloc(mElementsCount, sizeof(char *));
     mElementNameLengths = (size_t*)calloc(mElementsCount, sizeof(size_t));
     mArraySizes = (uint32_t*)calloc(mElementsCount, sizeof(uint32_t));
@@ -412,7 +412,7 @@ Element::Builder::Builder(android::RSC::sp<RS> rs) {
     mElementsVecSize = 8;
     mElementsCount = 0;
     // Initialize space.
-    mElements = (android::RSC::sp<const Element> *)calloc(mElementsVecSize, sizeof(android::RSC::sp<Element>));
+    mElements = (android::RSC::sp<const Element> *)calloc(mElementsVecSize, sizeof(android::RSC::sp<const Element>));
     mElementNames = (char **)calloc(mElementsVecSize, sizeof(char *));
     mElementNameLengths = (size_t*)calloc(mElementsVecSize, sizeof(size_t));
     mArraySizes = (uint32_t*)calloc(mElementsVecSize, sizeof(uint32_t));
@@ -453,7 +453,7 @@ void Element::Builder::add(android::RSC::sp<const Element>e, const char * name, 
         // If pre-allocated space is full, allocate a larger one.
         mElementsVecSize += 8;
 
-        android::RSC::sp<const Element> * newElements = (android::RSC::sp<const Element> *)calloc(mElementsVecSize, sizeof(android::RSC::sp<Element>));
+        android::RSC::sp<const Element> * newElements = (android::RSC::sp<const Element> *)calloc(mElementsVecSize, sizeof(android::RSC::sp<const Element>));
         char ** newElementNames = (char **)calloc(mElementsVecSize, sizeof(char *));
         size_t * newElementNameLengths = (size_t*)calloc(mElementsVecSize, sizeof(size_t));
         uint32_t * newArraySizes = (uint32_t*)calloc(mElementsVecSize, sizeof(uint32_t));
