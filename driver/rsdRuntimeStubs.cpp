@@ -685,10 +685,23 @@ void rsForEachInternal(int slot,
     Allocation* inputs[RS_KERNEL_MAX_ARGUMENTS];
     for (int i = 0; i < numInputs; i++) {
         inputs[i] = (Allocation*)allocs[i].p;
+        CHECK_OBJ(inputs[i]);
+        inputs[i]->incSysRef();
     }
-    Allocation* out = hasOutput ? (Allocation*)allocs[numInputs].p : nullptr;
+    Allocation* out = nullptr;
+    if (hasOutput) {
+        out = (Allocation*)allocs[numInputs].p;
+        CHECK_OBJ(out);
+        out->incSysRef();
+    }
     rsrForEach(rsc, s, slot, numInputs, numInputs > 0 ? inputs : nullptr, out,
                nullptr, 0, (RsScriptCall*)options);
+    for (int i = 0; i < numInputs; i++) {
+        inputs[i]->decSysRef();
+    }
+    if (hasOutput) {
+        out->decSysRef();
+    }
 }
 
 void __attribute__((overloadable)) rsForEach(::rs_script script,
